@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - 'lab*'   #замена ветки, на рабочую
-      - feature/github_actions
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest #Линукс
     permissions: 
       contents: write
     steps:
