@@ -3,13 +3,13 @@ name: 'C++ CI'
 on:
   push:
     branches:
-      - main
+      - 'lab*'   #замена ветки, на рабочую
       - feature/github_actions
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: write-all
+    # permissions: write-all
     steps:
       - uses: actions/checkout@v3
         with:
