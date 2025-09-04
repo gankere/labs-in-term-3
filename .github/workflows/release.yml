@@ -29,7 +29,8 @@ jobs:
 
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build .
-      - run: cmake --build . --target test
+      - name: Run Tests
+        run: ctest --verbose
       #Работает только для Линукса
       - run: cmake --build . --target package
         if: matrix.os == 'ubuntu-latest'
