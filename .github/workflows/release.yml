@@ -23,14 +23,18 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
       
-      - name: Install Boost(Windows)
-        if: matrix.os == 'windows-latest'
-        run: choco install boost-msvc-14.3 -y
-
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build .
+
+      - name: Copy Boost DLLs (Windows only)
+        if: matrix.os == 'windows-latest'
+        run: |
+          copy "C:\local\boost_1_82_0\lib\*.dll" .\ 2>nul || echo "DLL not found, continuing"
+          copy "C:\tools\boost\lib\*.dll" .\ 2>nul || echo "DLL not found, continuing"
+          
       - name: Run Tests
         run: ctest --verbose
+
       #Работает только для Линукса
       - run: cmake --build . --target package
         if: matrix.os == 'ubuntu-latest'
