@@ -20,15 +20,24 @@ set_target_properties(helloworld_cli helloworld test_version PROPERTIES
 target_include_directories(helloworld
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
+
+if(WIN32)
+    add_custom_command(TARGET test_version POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+            "${Boost_LIBRARY_DIRS}/boost_unit_test_framework-vc143-mt-x64-1_82.dll"
+            $<TARGET_FILE_DIR:test_version>
+    )
+endif()
+
 set_target_properties(test_version PROPERTIES
     COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
-    INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
+    INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIRS}
 )
 
 target_link_libraries(helloworld_cli PRIVATE
     helloworld
 )
-target_link_libraries(test_version
+target_link_libraries(test_version PRIVATE
     ${Boost_LIBRARIES}
     helloworld
 )
@@ -55,8 +64,6 @@ else ()
     )
 endif()
 
-
-
 install(TARGETS helloworld_cli RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
@@ -71,4 +78,4 @@ include(CPack)
 
 enable_testing()
 
-add_test(test_version test_version)
+add_test(NAME test_version COMMAND test_version)

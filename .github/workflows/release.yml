@@ -25,14 +25,23 @@ jobs:
       
       - name: Install Boost(Windows)
         if: matrix.os == 'windows-latest'
-        run: choco install boost-msvc-14.3 -y
+        run: |
+          choco install boost-msvc-14.3 -y
+          echo "BOOST_ROOT=C:\local\boost_1_82_0" >> $GITHUB_ENV
+          echo "BOOST_LIBRARYDIR=C:\local\boost_1_82_0\lib64-msvc-14.3" >> $GITHUB_ENV
 
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build .
+      
+      - name: Copy Boost DLLs (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          copy "C:\local\boost_1_82_0\lib64-msvc-14.3\*.dll" ${{github.workspace}}\
+      
       - name: Run Tests
         run: ctest --verbose
 
-      #Работает только для Линукса
+      #только для Линукса
       - run: cmake --build . --target package
         if: matrix.os == 'ubuntu-latest'
 
