@@ -24,7 +24,11 @@ jobs:
       - name: Install Windows dependencies
         if: matrix.os == 'windows-latest'
         run: |
-          choco install boost-msvc-14.3 -y
+          # Устанавливаем vcpkg и Boost
+          git clone https://github.com/Microsoft/vcpkg.git
+          .\vcpkg\bootstrap-vcpkg.bat
+          .\vcpkg\vcpkg install boost-test:x64-windows
+          echo "VCPKG_ROOT=$env:GITHUB_WORKSPACE\vcpkg" >> $env:GITHUB_ENV
           choco install gh -y
       
       - name: Install Linux dependencies
@@ -34,13 +38,6 @@ jobs:
       # Сборка
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build .
-      
-      # ↓↓↓ ВАЖНО: Копируем Boost DLL на Windows ↓↓↓
-      - name: Copy Boost DLLs on Windows
-        if: matrix.os == 'windows-latest'
-        run: |
-          copy "C:\Program Files\Boost\lib\boost_unit_test_framework*-vc143-mt-x64-1_*.dll" ./Debug/
-          copy "C:\Program Files\Boost\lib\boost_unit_test_framework*-vc143-mt-x64-1_*.dll" ./
       
       # Запуск тестов
       - run: ctest --verbose --output-on-failure
