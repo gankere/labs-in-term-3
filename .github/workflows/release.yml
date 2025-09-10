@@ -20,38 +20,42 @@ jobs:
         with:
           submodules: true
       
-      # УСТАНОВКА ЗАВИСИМОСТЕЙ
+      # Установка зависимостей
       - name: Install Windows dependencies
         if: matrix.os == 'windows-latest'
         run: |
           choco install boost-msvc-14.3 -y
           choco install gh -y
-          echo "C:\Program Files\Boost\lib" >> $env:GITHUB_PATH
       
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
       
-      # СБОРКА
+      # Сборка
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build .
-      - run: ctest --verbose
       
-      # СОЗДАНИЕ РЕЛИЗА ПРЯМО ЧЕРЕЗ GH С БИНАРНИКАМИ
-      - name: Create Release with gh
-        if: success() && matrix.os == 'windows-latest'
+      # ↓↓↓ ВАЖНО: Копируем Boost DLL на Windows ↓↓↓
+      - name: Copy Boost DLLs on Windows
+        if: matrix.os == 'windows-latest'
         run: |
-          gh release create win-build-${{ github.run_number }} \
-            --title "Windows Build ${{ github.run_number }}" \
-            ./Debug/helloworld_cli.exe ./Debug/test_version.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          copy "C:\Program Files\Boost\lib\boost_unit_test_framework*-vc143-mt-x64-1_*.dll" ./Debug/
+          copy "C:\Program Files\Boost\lib\boost_unit_test_framework*-vc143-mt-x64-1_*.dll" ./
+      
+      # Запуск тестов
+      - run: ctest --verbose --output-on-failure
+      
+      # Создание релиза
       - name: Create Release with gh
-        if: success() && matrix.os == 'ubuntu-latest'
         run: |
-          gh release create linux-build-${{ github.run_number }} \
-            --title "Linux Build ${{ github.run_number }}" \
-            ./helloworld_cli ./test_version
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            gh release create win-build-${{ github.run_number }} \
+              --title "Windows Build ${{ github.run_number }}" \
+              ./Debug/helloworld_cli.exe ./Debug/test_version.exe
+          else
+            gh release create linux-build-${{ github.run_number }} \
+              --title "Linux Build ${{ github.run_number }}" \
+              helloworld_cli test_version
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
