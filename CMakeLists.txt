@@ -31,9 +31,9 @@ target_include_directories(test_version
     ${Boost_INCLUDE_DIRS}
 )
 
-target_compile_definitions(test_version
-    PRIVATE BOOST_TEST_DYN_LINK
-)
+# target_compile_definitions(test_version
+#     PRIVATE BOOST_TEST_DYN_LINK
+# )
 
 target_link_libraries(helloworld_cli PRIVATE
     helloworld
