@@ -4,8 +4,21 @@ endif()
 
 cmake_minimum_required(VERSION 3.10)
 
-set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
-set(PROJECT_VERSION 0.0.${PATCH_VERSION}) 
+# Получаем версию из git
+find_package(Git)
+if(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} rev-list --count HEAD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_VERSION_COUNT
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    set(PATCH_VERSION ${GIT_VERSION_COUNT})
+else()
+    set(PATCH_VERSION "1")  #по умолчанию
+endif()
+
+set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
 project(helloworld VERSION ${PROJECT_VERSION})
 
@@ -34,10 +47,6 @@ target_include_directories(test_version
     PRIVATE "${CMAKE_BINARY_DIR}"
     ${Boost_INCLUDE_DIRS}
 )
-
-# target_compile_definitions(test_version
-#     PRIVATE BOOST_TEST_DYN_LINK
-# )
 
 target_link_libraries(helloworld_cli PRIVATE
     helloworld
