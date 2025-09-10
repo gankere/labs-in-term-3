@@ -20,7 +20,6 @@ jobs:
         with:
           submodules: true
       
-      # Установка зависимостей
       - name: Install Windows dependencies
         if: matrix.os == 'windows-latest'
         run: |
@@ -35,24 +34,25 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
       
-      # Сборка
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build .
       
-      # Запуск тестов
       - run: ctest --verbose --output-on-failure
       
-      # Создание релиза
-      - name: Create Release with gh
+      - name: Create Release on Windows
+        if: matrix.os == 'windows-latest'
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            gh release create win-build-${{ github.run_number }} \
-              --title "Windows Build ${{ github.run_number }}" \
-              ./Debug/helloworld_cli.exe ./Debug/test_version.exe
-          else
-            gh release create linux-build-${{ github.run_number }} \
-              --title "Linux Build ${{ github.run_number }}" \
-              helloworld_cli test_version
-          fi
+          gh release create win-build-${{ github.run_number }} `
+            --title "Windows Build ${{ github.run_number }}" `
+            ./Debug/helloworld_cli.exe ./Debug/test_version.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create Release on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          gh release create linux-build-${{ github.run_number }} \
+            --title "Linux Build ${{ github.run_number }}" \
+            ./helloworld_cli ./test_version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
