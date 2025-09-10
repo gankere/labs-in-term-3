@@ -26,6 +26,7 @@ jobs:
         run: |
           choco install boost-msvc-14.3 -y
           choco install gh -y
+          echo "C:\Program Files\Boost\lib" >> $env:GITHUB_PATH
       
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
@@ -38,15 +39,19 @@ jobs:
       
       # СОЗДАНИЕ РЕЛИЗА ПРЯМО ЧЕРЕЗ GH С БИНАРНИКАМИ
       - name: Create Release with gh
+        if: success() && matrix.os == 'windows-latest'
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            gh release create win-build-${{ github.run_number }} \
-              --title "Windows Build ${{ github.run_number }}" \
-              helloworld_cli.exe test_version.exe
-          else
-            gh release create linux-build-${{ github.run_number }} \
-              --title "Linux Build ${{ github.run_number }}" \
-              helloworld_cli test_version
-          fi
+          gh release create win-build-${{ github.run_number }} \
+            --title "Windows Build ${{ github.run_number }}" \
+            ./Debug/helloworld_cli.exe ./Debug/test_version.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release with gh
+        if: success() && matrix.os == 'ubuntu-latest'
+        run: |
+          gh release create linux-build-${{ github.run_number }} \
+            --title "Linux Build ${{ github.run_number }}" \
+            ./helloworld_cli ./test_version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

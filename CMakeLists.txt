@@ -44,6 +44,12 @@ target_link_libraries(test_version
     helloworld
 )
 
+install(TARGETS helloworld_cli test_version
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+
 if (MSVC)
     target_compile_options(helloworld_cli PRIVATE
         /W4
