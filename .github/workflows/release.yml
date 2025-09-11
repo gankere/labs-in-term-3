@@ -22,10 +22,15 @@ jobs:
       
       - name: Install Windows dependencies
         if: matrix.os == 'windows-latest'
+
+        # Устанавливаем vcpkg и Boost
+        #vcpkg не предустановлен на раннерах GitHub Actions, поэтому его нужно скачать
+        #Запускается скрипт начальной настройки vcpkg для Windows
         run: |
-          # Устанавливаем vcpkg и Boost
-          git clone https://github.com/Microsoft/vcpkg.git
+          
+          git clone https://github.com/Microsoft/vcpkg.git 
           .\vcpkg\bootstrap-vcpkg.bat
+         
           .\vcpkg\vcpkg install boost-test:x64-windows
           echo "VCPKG_ROOT=$env:GITHUB_WORKSPACE\vcpkg" >> $env:GITHUB_ENV
           choco install gh -y
@@ -34,17 +39,18 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
       
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
-      - run: cmake --build .
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} #запускает CMake для подготовки проекта к сборке
+      - run: cmake --build . 
       
       - run: ctest --verbose --output-on-failure
       
       - name: Create Release on Windows
         if: matrix.os == 'windows-latest'
+        #создания бинарника исполняемого .exe файла
         run: |
           gh release create win-build-${{ github.run_number }} `
             --title "Windows Build ${{ github.run_number }}" `
-            ./Debug/helloworld_cli.exe ./Debug/test_version.exe
+            ./Debug/helloworld_cli.exe ./Debug/test_version.exe 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
@@ -55,4 +61,5 @@ jobs:
             --title "Linux Build ${{ github.run_number }}" \
             ./helloworld_cli ./test_version
         env:
+          #для создания релиза от имени GitHub Actions и Разрешения на запись в репозиторий
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -5,12 +5,13 @@ endif()
 cmake_minimum_required(VERSION 3.10)
 
 # Получаем версию из git
+#Поиск номера релизной версии
 find_package(Git)
 if(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
     execute_process(
         COMMAND ${GIT_EXECUTABLE} rev-list --count HEAD
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE GIT_VERSION_COUNT
+        OUTPUT_VARIABLE GIT_VERSION_COUNT #получаем номер версии (коммита)
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     set(PATCH_VERSION ${GIT_VERSION_COUNT})
@@ -24,7 +25,7 @@ project(helloworld VERSION ${PROJECT_VERSION})
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
-configure_file(version.h.in version.h)
+configure_file(version.h.in version.h) #переход в version.h.in
 
 add_executable(helloworld_cli main.cpp)
 add_library(helloworld lib.cpp)
