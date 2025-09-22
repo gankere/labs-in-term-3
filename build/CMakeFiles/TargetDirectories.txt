@@ -1,0 +1,4 @@
+D:/TPU_WorkSpace/3 term/lab2/build/CMakeFiles/functions.dir
+D:/TPU_WorkSpace/3 term/lab2/build/CMakeFiles/lab2.dir
+D:/TPU_WorkSpace/3 term/lab2/build/CMakeFiles/edit_cache.dir
+D:/TPU_WorkSpace/3 term/lab2/build/CMakeFiles/rebuild_cache.dir

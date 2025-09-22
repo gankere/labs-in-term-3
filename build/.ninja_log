@@ -1,0 +1,5 @@
+# ninja log v5
+18	1321	7802703873215939	CMakeFiles/lab2.dir/main.cpp.obj	1c942ecdad171a6d
+11	1929	7802703879369467	CMakeFiles/functions.dir/functions.cpp.obj	39ec4d6984d0ba4b
+1929	2608	7802703886141377	libfunctions.a	d08b0418edba4a37
+2608	2938	7802703889342794	lab2.exe	28541c81bc0a879c
