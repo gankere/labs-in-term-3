@@ -1,3 +1,0 @@
-D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate.dir
-D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/CMakeFiles/edit_cache.dir
-D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/CMakeFiles/rebuild_cache.dir
