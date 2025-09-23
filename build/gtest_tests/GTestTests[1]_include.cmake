@@ -1,0 +1,5 @@
+if(EXISTS "D:/TPU_WorkSpace/3 term/lab2/build/gtest_tests/GTestTests[1]_tests.cmake")
+  include("D:/TPU_WorkSpace/3 term/lab2/build/gtest_tests/GTestTests[1]_tests.cmake")
+else()
+  add_test(GTestTests_NOT_BUILT GTestTests_NOT_BUILT)
+endif()
