@@ -24,17 +24,13 @@ add_library(lab2::functions ALIAS functions)
 add_executable(lab2 main.cpp)
 target_link_libraries(lab2 PRIVATE functions)
 
-# 👇 Теперь lab2 существует — можно настраивать include и compile definitions
-configure_file(version.h.in version.h @ONLY)
-target_include_directories(lab2 PRIVATE "${CMAKE_BINARY_DIR}")
-
 # Путь к файлу данных
 target_compile_definitions(lab2 PRIVATE 
     IP_FILTER_PATH="${CMAKE_SOURCE_DIR}/ip_filter.tsv"
 )
 
 # Тесты
-add_subdirectory(gtest_tests)
+add_subdirectory(gtest_tests)  # ← ИСПРАВЛЕНО: убрал лишний путь
 
 # CPack — упаковка в .zip / .deb
 set(CPACK_PACKAGE_NAME "Lab2")
