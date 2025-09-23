@@ -11,6 +11,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10  # Добавьте таймаут
     
     steps:
       - uses: actions/checkout@v3
@@ -20,9 +21,12 @@ jobs:
 
       - name: Configure
         run: cmake -B build
+        timeout-minutes: 5  # Таймаут для конфигурации
 
       - name: Build
-        run: cmake --build build
+        run: cmake --build build --config Release
+        timeout-minutes: 10  # Таймаут для сборки
 
       - name: Run tests
         run: ctest --test-dir build --verbose --output-on-failure
+        timeout-minutes: 5  # Таймаут для тестов

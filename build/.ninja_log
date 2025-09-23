@@ -15,3 +15,9 @@
 4104	6365	7803550380193290	libfunctions.a	d08b0418edba4a37
 3192	8462	7803550403379441	_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.obj	45aaaad05590dfc
 44	3189	7803550349994976	CMakeFiles/lab2.dir/main.cpp.obj	8e3ac7be8aa7a936
+54	1999	7803559659504443	CMakeFiles/lab2.dir/main.cpp.obj	1c942ecdad171a6d
+2000	2560	7803559665159325	lab2.exe	28541c81bc0a879c
+61	3807	7803559677705759	gtest_tests/CMakeFiles/GTestTests.dir/tests.cpp.obj	cdfea236380f48d1
+3807	5687	7803559696535398	gtest_tests/GTestTests.exe	838a14a34bde59db
+3807	5687	7803559696535398	gtest_tests/GTestTests[1]_tests.cmake	838a14a34bde59db
+3807	5687	7803559696535398	D:/TPU_WorkSpace/3 term/lab2/build/gtest_tests/GTestTests[1]_tests.cmake	838a14a34bde59db
