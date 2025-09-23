@@ -22,14 +22,14 @@ function(check_file_hash has_hash hash_is_good)
   set("${has_hash}" TRUE PARENT_SCOPE)
 
   message(STATUS "verifying file...
-       file='D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip'")
+       file='D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip'")
 
-  file("" "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip" actual_value)
+  file("" "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip" actual_value)
 
   if(NOT "${actual_value}" STREQUAL "")
     set("${hash_is_good}" FALSE PARENT_SCOPE)
     message(STATUS " hash of
-    D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip
+    D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip
   does not match expected value
     expected: ''
       actual: '${actual_value}'")
@@ -71,40 +71,40 @@ function(sleep_before_download attempt)
   execute_process(COMMAND "${CMAKE_COMMAND}" -E sleep "${sleep_seconds}")
 endfunction()
 
-if("D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip" STREQUAL "")
+if("D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip" STREQUAL "")
   message(FATAL_ERROR "LOCAL can't be empty")
 endif()
 
-if("https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip" STREQUAL "")
+if("https://github.com/google/googletest/archive/refs/tags/v1.12.1.zip" STREQUAL "")
   message(FATAL_ERROR "REMOTE can't be empty")
 endif()
 
-if(EXISTS "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip")
+if(EXISTS "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip")
   check_file_hash(has_hash hash_is_good)
   if(has_hash)
     if(hash_is_good)
       message(STATUS "File already exists and hash match (skip download):
-  file='D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip'
+  file='D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip'
   =''"
       )
       return()
     else()
       message(STATUS "File already exists but hash mismatch. Removing...")
-      file(REMOVE "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip")
+      file(REMOVE "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip")
     endif()
   else()
     message(STATUS "File already exists but no hash specified (use URL_HASH):
-  file='D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip'
+  file='D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip'
 Old file will be removed and new file downloaded from URL."
     )
-    file(REMOVE "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip")
+    file(REMOVE "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip")
   endif()
 endif()
 
 set(retry_number 5)
 
 message(STATUS "Downloading...
-   dst='D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip'
+   dst='D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip'
    timeout='none'
    inactivity timeout='none'"
 )
@@ -115,7 +115,7 @@ foreach(i RANGE ${retry_number})
   if(status_code IN_LIST download_retry_codes)
     sleep_before_download(${i})
   endif()
-  foreach(url https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip)
+  foreach(url https://github.com/google/googletest/archive/refs/tags/v1.12.1.zip)
     if(NOT url IN_LIST skip_url_list)
       message(STATUS "Using src='${url}'")
 
@@ -126,7 +126,7 @@ foreach(i RANGE ${retry_number})
 
       file(
         DOWNLOAD
-        "${url}" "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip"
+        "${url}" "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip"
         SHOW_PROGRESS
         # no TIMEOUT
         # no INACTIVITY_TIMEOUT
@@ -143,7 +143,7 @@ foreach(i RANGE ${retry_number})
         check_file_hash(has_hash hash_is_good)
         if(has_hash AND NOT hash_is_good)
           message(STATUS "Hash mismatch, removing...")
-          file(REMOVE "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip")
+          file(REMOVE "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.12.1.zip")
         else()
           message(STATUS "Downloading... done")
           return()

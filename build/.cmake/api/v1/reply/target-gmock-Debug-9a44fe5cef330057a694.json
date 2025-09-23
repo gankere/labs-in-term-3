@@ -3,7 +3,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "lib/libgmock_main.a"
+			"path" : "lib/libgmock.a"
 		}
 	],
 	"backtrace" : 3,
@@ -32,37 +32,37 @@
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 100,
+				"line" : 97,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 210,
+				"line" : 205,
 				"parent" : 1
 			},
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 165,
+				"line" : 152,
 				"parent" : 2
 			},
 			{
 				"command" : 4,
 				"file" : 1,
-				"line" : 116,
+				"line" : 120,
 				"parent" : 0
 			},
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 305,
+				"line" : 316,
 				"parent" : 4
 			},
 			{
 				"command" : 5,
 				"file" : 1,
-				"line" : 101,
+				"line" : 98,
 				"parent" : 0
 			},
 			{
@@ -82,19 +82,17 @@
 					"fragment" : "-g"
 				},
 				{
-					"fragment" : "-Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers"
+					"fragment" : "-Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 7,
-					"isSystem" : true,
 					"path" : "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-src/googlemock/include"
 				},
 				{
 					"backtrace" : 7,
-					"isSystem" : true,
 					"path" : "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-src/googlemock"
 				},
 				{
@@ -119,14 +117,10 @@
 	[
 		{
 			"backtrace" : 6,
-			"id" : "gmock::@0f7bb11d64f3678238c7"
-		},
-		{
-			"backtrace" : 6,
 			"id" : "gtest::@1ea2dfc0605fe3ab2a3f"
 		}
 	],
-	"id" : "gmock_main::@0f7bb11d64f3678238c7",
+	"id" : "gmock::@0f7bb11d64f3678238c7",
 	"install" : 
 	{
 		"destinations" : 
@@ -141,8 +135,8 @@
 			"path" : "C:/Program Files (x86)/lab2"
 		}
 	},
-	"name" : "gmock_main",
-	"nameOnDisk" : "libgmock_main.a",
+	"name" : "gmock",
+	"nameOnDisk" : "libgmock.a",
 	"paths" : 
 	{
 		"build" : "_deps/googletest-build/googlemock",
@@ -163,7 +157,7 @@
 		{
 			"backtrace" : 3,
 			"compileGroupIndex" : 0,
-			"path" : "build/_deps/googletest-src/googlemock/src/gmock_main.cc",
+			"path" : "build/_deps/googletest-src/googlemock/src/gmock-all.cc",
 			"sourceGroupIndex" : 0
 		}
 	],

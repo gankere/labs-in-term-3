@@ -184,6 +184,21 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
+			"path" : "C:/msys64/mingw64/share/cmake/Modules/FindGit.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/msys64/mingw64/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/msys64/mingw64/share/cmake/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
 			"path" : "C:/msys64/mingw64/share/cmake/Modules/FetchContent/CMakeLists.cmake.in"
 		},
 		{
@@ -224,6 +239,26 @@
 		{
 			"isGenerated" : true,
 			"path" : "build/_deps/googletest-src/googletest/cmake/internal_utils.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/msys64/mingw64/share/cmake/Modules/FindPython.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/msys64/mingw64/share/cmake/Modules/FindPython/Support.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/msys64/mingw64/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/msys64/mingw64/share/cmake/Modules/FindPackageMessage.cmake"
 		},
 		{
 			"isCMake" : true,

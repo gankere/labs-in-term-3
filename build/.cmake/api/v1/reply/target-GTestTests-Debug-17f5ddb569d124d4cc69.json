@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "lab2.exe"
+			"path" : "gtest_tests/GTestTests.exe"
 		},
 		{
-			"path" : "lab2.pdb"
+			"path" : "gtest_tests/GTestTests.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -14,13 +14,12 @@
 		"commands" : 
 		[
 			"add_executable",
-			"install",
-			"target_link_libraries",
-			"target_compile_definitions"
+			"target_link_libraries"
 		],
 		"files" : 
 		[
-			"CMakeLists.txt"
+			"gtest_tests/CMakeLists.txt",
+			"build/_deps/googletest-src/googletest/CMakeLists.txt"
 		],
 		"nodes" : 
 		[
@@ -30,26 +29,23 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 24,
+				"line" : 12,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 48,
+				"line" : 13,
 				"parent" : 0
 			},
 			{
-				"command" : 2,
-				"file" : 0,
-				"line" : 25,
-				"parent" : 0
+				"file" : 1
 			},
 			{
-				"command" : 3,
-				"file" : 0,
-				"line" : 28,
-				"parent" : 0
+				"command" : 1,
+				"file" : 1,
+				"line" : 145,
+				"parent" : 3
 			}
 		]
 	},
@@ -62,18 +58,21 @@
 					"fragment" : "-g"
 				}
 			],
-			"defines" : 
-			[
-				{
-					"backtrace" : 4,
-					"define" : "IP_FILTER_PATH=\"D:/TPU_WorkSpace/3 term/lab2/ip_filter.tsv\""
-				}
-			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 3,
+					"backtrace" : 2,
 					"path" : "D:/TPU_WorkSpace/3 term/lab2"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-src/googletest/include"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-src/googletest"
 				}
 			],
 			"language" : "CXX",
@@ -86,25 +85,19 @@
 	"dependencies" : 
 	[
 		{
-			"backtrace" : 3,
+			"backtrace" : 2,
 			"id" : "functions::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "gtest::@1ea2dfc0605fe3ab2a3f"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "gtest_main::@1ea2dfc0605fe3ab2a3f"
 		}
 	],
-	"id" : "lab2::@6890427a1f51a3e7e1df",
-	"install" : 
-	{
-		"destinations" : 
-		[
-			{
-				"backtrace" : 2,
-				"path" : "bin"
-			}
-		],
-		"prefix" : 
-		{
-			"path" : "C:/Program Files (x86)/lab2"
-		}
-	},
+	"id" : "GTestTests::@f96e7622f669c7a3a96f",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -118,8 +111,18 @@
 				"role" : "flags"
 			},
 			{
-				"backtrace" : 3,
+				"backtrace" : 2,
 				"fragment" : "libfunctions.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "lib\\libgtest_main.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "lib\\libgtest.a",
 				"role" : "libraries"
 			},
 			{
@@ -129,12 +132,12 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "lab2",
-	"nameOnDisk" : "lab2.exe",
+	"name" : "GTestTests",
+	"nameOnDisk" : "GTestTests.exe",
 	"paths" : 
 	{
-		"build" : ".",
-		"source" : "."
+		"build" : "gtest_tests",
+		"source" : "gtest_tests"
 	},
 	"sourceGroups" : 
 	[
@@ -151,7 +154,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "main.cpp",
+			"path" : "gtest_tests/tests.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

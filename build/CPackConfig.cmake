@@ -12,7 +12,6 @@
 
 set(CPACK_BUILD_SOURCE_DIRS "D:/TPU_WorkSpace/3 term/lab2;D:/TPU_WorkSpace/3 term/lab2/build")
 set(CPACK_CMAKE_GENERATOR "Ninja")
-set(CPACK_COMPONENTS_ALL "Unspecified;gmock;gtest")
 set(CPACK_COMPONENT_UNSPECIFIED_HIDDEN "TRUE")
 set(CPACK_COMPONENT_UNSPECIFIED_REQUIRED "TRUE")
 set(CPACK_DEFAULT_PACKAGE_DESCRIPTION_FILE "C:/msys64/mingw64/share/cmake/Templates/CPack.GenericDescription.txt")

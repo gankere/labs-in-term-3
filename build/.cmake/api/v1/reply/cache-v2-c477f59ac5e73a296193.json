@@ -1694,6 +1694,34 @@
 			"value" : "OFF"
 		},
 		{
+			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Python",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Details about finding Python"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "[C:/Users/Admin/AppData/Local/Programs/Python/Python312/python.exe][cfound components: Interpreter ][v3.12.0()]"
+		},
+		{
+			"name" : "GIT_EXECUTABLE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Git command line client"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "C:/Program Files/Git/cmd/git.exe"
+		},
+		{
 			"name" : "GTEST_HAS_ABSL",
 			"properties" : 
 			[
@@ -1740,6 +1768,78 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "C:/Program Files (x86)/lab2"
+		},
+		{
+			"name" : "_Python_Compiler_REASON_FAILURE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Compiler reason failure"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "_Python_Development_REASON_FAILURE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Development reason failure"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "_Python_EXECUTABLE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a program."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/Users/Admin/AppData/Local/Programs/Python/Python312/python.exe"
+		},
+		{
+			"name" : "_Python_INTERPRETER_PROPERTIES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Python Properties"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Python;3;12;0;64;32;;cp312-win_amd64;;C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Lib;C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Lib;C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages;C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages"
+		},
+		{
+			"name" : "_Python_INTERPRETER_SIGNATURE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "8e52225f6a886a2dc1684c60710f00de"
+		},
+		{
+			"name" : "_Python_NumPy_REASON_FAILURE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "NumPy reason failure"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
 		},
 		{
 			"name" : "cmake_package_name",
@@ -1790,6 +1890,18 @@
 			"value" : "OFF"
 		},
 		{
+			"name" : "gmock_LIB_DEPENDS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Dependencies for the target"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "general;gtest;"
+		},
+		{
 			"name" : "gmock_SOURCE_DIR",
 			"properties" : 
 			[
@@ -1816,6 +1928,18 @@
 			],
 			"type" : "BOOL",
 			"value" : "OFF"
+		},
+		{
+			"name" : "gmock_main_LIB_DEPENDS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Dependencies for the target"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "general;gmock;"
 		},
 		{
 			"name" : "googletest-distribution_BINARY_DIR",
@@ -1968,6 +2092,18 @@
 			],
 			"type" : "BOOL",
 			"value" : "OFF"
+		},
+		{
+			"name" : "gtest_main_LIB_DEPENDS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Dependencies for the target"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "general;gtest;"
 		},
 		{
 			"name" : "lab2_BINARY_DIR",

@@ -330,6 +330,9 @@ FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
 //Enables UPDATE_DISCONNECTED behavior just for population of googletest
 FETCHCONTENT_UPDATES_DISCONNECTED_GOOGLETEST:BOOL=OFF
 
+//Git command line client
+GIT_EXECUTABLE:FILEPATH=C:/Program Files/Git/cmd/git.exe
+
 //Use Abseil and RE2. Requires Abseil and RE2 to be separately
 // added to the build.
 GTEST_HAS_ABSL:BOOL=OFF
@@ -344,11 +347,17 @@ gmock_BINARY_DIR:STATIC=D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-buil
 //Value Computed by CMake
 gmock_IS_TOP_LEVEL:STATIC=OFF
 
+//Dependencies for the target
+gmock_LIB_DEPENDS:STATIC=general;gtest;
+
 //Value Computed by CMake
 gmock_SOURCE_DIR:STATIC=D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-src/googlemock
 
 //Build all of Google Mock's own tests.
 gmock_build_tests:BOOL=OFF
+
+//Dependencies for the target
+gmock_main_LIB_DEPENDS:STATIC=general;gmock;
 
 //Value Computed by CMake
 googletest-distribution_BINARY_DIR:STATIC=D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-build
@@ -383,6 +392,9 @@ gtest_force_shared_crt:BOOL=OFF
 
 //Build gtest with internal symbols hidden in shared libraries.
 gtest_hide_internal_symbols:BOOL=OFF
+
+//Dependencies for the target
+gtest_main_LIB_DEPENDS:STATIC=general;gtest;
 
 //Value Computed by CMake
 lab2_BINARY_DIR:STATIC=D:/TPU_WorkSpace/3 term/lab2/build
@@ -590,10 +602,25 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 CPACK_SOURCE_7Z-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CPACK_SOURCE_ZIP
 CPACK_SOURCE_ZIP-ADVANCED:INTERNAL=1
+//Details about finding Python
+FIND_PACKAGE_MESSAGE_DETAILS_Python:INTERNAL=[C:/Users/Admin/AppData/Local/Programs/Python/Python312/python.exe][cfound components: Interpreter ][v3.12.0()]
+//ADVANCED property for variable: GIT_EXECUTABLE
+GIT_EXECUTABLE-ADVANCED:INTERNAL=1
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=C:/Program Files (x86)/lab2
+//Compiler reason failure
+_Python_Compiler_REASON_FAILURE:INTERNAL=
+//Development reason failure
+_Python_Development_REASON_FAILURE:INTERNAL=
+//Path to a program.
+_Python_EXECUTABLE:INTERNAL=C:/Users/Admin/AppData/Local/Programs/Python/Python312/python.exe
+//Python Properties
+_Python_INTERPRETER_PROPERTIES:INTERNAL=Python;3;12;0;64;32;;cp312-win_amd64;;C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib;C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib;C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages;C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages
+_Python_INTERPRETER_SIGNATURE:INTERNAL=8e52225f6a886a2dc1684c60710f00de
+//NumPy reason failure
+_Python_NumPy_REASON_FAILURE:INTERNAL=
 cmake_package_name:INTERNAL=GTest
 generated_dir:INTERNAL=D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-build/googletest/generated
 //ADVANCED property for variable: gmock_build_tests

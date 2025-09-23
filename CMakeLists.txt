@@ -18,7 +18,6 @@ project(lab2 VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT
 # Основная библиотека
 add_library(functions STATIC functions.cpp)
 target_include_directories(functions PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
-add_library(lab2::functions ALIAS functions)
 
 # Исполняемый файл
 add_executable(lab2 main.cpp)
@@ -32,7 +31,7 @@ target_compile_definitions(lab2 PRIVATE
 # Тесты
 add_subdirectory(gtest_tests)
 
-# CPack — упаковка в .zip / .deb
+# CPack
 set(CPACK_PACKAGE_NAME "Lab2")
 set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}")
@@ -46,5 +45,4 @@ elseif(UNIX)
 endif()
 
 install(TARGETS lab2 DESTINATION bin)
-
 include(CPack)
