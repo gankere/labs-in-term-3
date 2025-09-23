@@ -1,6 +1,11 @@
 # ninja log v5
-94	19600	7802711987240710	_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.obj	4c65532c3efcfcce
+113	12456	7802711917980565	_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.obj	45aaaad05590dfc
+1929	2608	7802703886141377	libfunctions.a	d08b0418edba4a37
+56	3214	7803478712400516	CMakeFiles/lab2.dir/main.cpp.obj	8e3ac7be8aa7a936
+3214	3543	7803478715576052	lab2.exe	28541c81bc0a879c
+42	5883	7802714507592537	gtest_tests/CMakeFiles/GTestTests.dir/tests.cpp.obj	cdfea236380f48d1
 2535	2956	7802714477280021	lib/libgmock_main.a	b466a47dde745c07
+94	19600	7802711987240710	_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.obj	4c65532c3efcfcce
 11	1929	7802703879369467	CMakeFiles/functions.dir/functions.cpp.obj	39ec4d6984d0ba4b
 48	1907	7802714467899947	lib/libgtest.a	b03e46dea47a42c6
 99	13032	7802711923840707	_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.obj	21bf7d20a0a8c54e
@@ -10,8 +15,19 @@
 39	2969	7803467201273409	gtest_tests/GTestTests.exe	838a14a34bde59db
 1908	2535	7802714474113343	lib/libgmock.a	24a571b1f48634d9
 1922	2485	7802714472687149	lib/libgtest_main.a	ac31b17602a45876
-56	3214	7803478712400516	CMakeFiles/lab2.dir/main.cpp.obj	8e3ac7be8aa7a936
-113	12456	7802711917980565	_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.obj	45aaaad05590dfc
-1929	2608	7802703886141377	libfunctions.a	d08b0418edba4a37
-42	5883	7802714507592537	gtest_tests/CMakeFiles/GTestTests.dir/tests.cpp.obj	cdfea236380f48d1
-3214	3543	7803478715576052	lab2.exe	28541c81bc0a879c
+49	2415	7803482960295044	CMakeFiles/lab2.dir/main.cpp.obj	d746776a38890788
+44	4276	7803482978825490	CMakeFiles/functions.dir/functions.cpp.obj	90b045713a2818d4
+91	7779	7803483014095621	_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.obj	cc42376a887c1a87
+4289	7885	7803483014115554	libfunctions.a	d08b0418edba4a37
+2466	8173	7803483018085497	_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.obj	77b318f6fb46e3cb
+54	8740	7803483023894076	gtest_tests/CMakeFiles/GTestTests.dir/tests.cpp.obj	249026beb3e6603d
+7904	8807	7803483024524077	lab2.exe	9b30674d438914ad
+63	13698	7803483073865689	_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.obj	59c27b1c59713725
+106	27164	7803483208455110	_deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.obj	dd900c436041ab1f
+27165	27546	7803483212424087	lib/libgtest.a	b03e46dea47a42c6
+27560	27833	7803483215236562	lib/libgtest_main.a	ac31b17602a45876
+27547	27953	7803483216443331	lib/libgmock.a	24a571b1f48634d9
+27954	28126	7803483218198643	lib/libgmock_main.a	b466a47dde745c07
+27841	29115	7803483228091505	gtest_tests/GTestTests.exe	e53b00f1ddec555f
+27841	29115	7803483228091505	gtest_tests/GTestTests[1]_tests.cmake	e53b00f1ddec555f
+27841	29115	7803483228091505	D:/TPU_WorkSpace/3 term/lab2/build/gtest_tests/GTestTests[1]_tests.cmake	e53b00f1ddec555f
