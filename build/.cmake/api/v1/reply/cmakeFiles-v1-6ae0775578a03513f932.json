@@ -169,7 +169,7 @@
 			"path" : "C:/msys64/mingw64/share/cmake/Templates/CPackConfig.cmake.in"
 		},
 		{
-			"path" : "gtest_tests/CmakeLists.txt"
+			"path" : "gtest_tests/CMakeLists.txt"
 		},
 		{
 			"isCMake" : true,

@@ -30,7 +30,7 @@ target_compile_definitions(lab2 PRIVATE
 )
 
 # Тесты
-add_subdirectory(gtest_tests)  # ← ИСПРАВЛЕНО: убрал лишний путь
+add_subdirectory(gtest_tests)
 
 # CPack — упаковка в .zip / .deb
 set(CPACK_PACKAGE_NAME "Lab2")
