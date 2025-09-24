@@ -63,7 +63,12 @@ jobs:
           fetch-depth: 0
 
       - name: Clean build directory
-        run: rm -rf build/
+        run: |
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            rd /s /q build 2> nul || echo "Build dir not found"
+          else
+            rm -rf build
+          fi
 
       - name: Build
         shell: bash
