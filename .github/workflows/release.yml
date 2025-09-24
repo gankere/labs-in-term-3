@@ -89,6 +89,10 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y ninja-build
 
+      - name: Check ninja version
+        if: runner.os == 'Linux'
+        run: ninja --version
+
       - name: Configure with Ninja
         run: |
           cmake -G "Ninja" -S . -B build \
