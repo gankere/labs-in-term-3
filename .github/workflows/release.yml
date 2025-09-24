@@ -63,12 +63,16 @@ jobs:
           fetch-depth: 0
 
       - name: Clean build directory
-        shell: bash  # ← Указываем shell: bash, чтобы работало на всех ОС
+        shell: bash
         run: |
           if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            rd /s /q build 2> nul || echo "Build dir not found"
+            if [ -d "build" ]; then
+              rd /s /q build 2> nul
+            fi
           else
-            rm -rf build
+            if [ -d "build" ]; then
+              rm -rf build
+            fi
           fi
 
       - name: Build
