@@ -24,22 +24,40 @@ jobs:
         id: bump
         shell: bash
         run: |
+          unset new_tag major minor patch last_tag
+
           git fetch --tags --quiet
-          last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
+
+          # Берём последний семантический тег (vX.Y.Z)
+          last_tag=$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' --sort=-version:refname | head -n1)
+          if [ -z "$last_tag" ]; then
+            last_tag="v1.0.0"
+          fi
           last_tag=${last_tag#v}
+
           IFS='.' read -r major minor patch <<< "$last_tag"
 
           while true; do
             patch=$((patch+1))
             new_tag="$major.$minor.$patch"
 
+            # Проверка: тег должен состоять только из цифр и точек
+            if ! [[ "$new_tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "ERROR: Invalid tag format: '$new_tag'" >&2
+              exit 1
+            fi
+
+            # Проверяем, что тег ещё не существует
             if git rev-parse -q --verify "refs/tags/$new_tag" >/dev/null 2>&1; then
+              echo "Tag '$new_tag' already exists locally, skipping..."
               continue
             fi
             if git ls-remote --tags origin "refs/tags/$new_tag" | grep -q "$new_tag"; then
+              echo "Tag '$new_tag' already exists remotely, skipping..."
               continue
             fi
 
+            echo "✅ Creating tag: $new_tag"
             git tag "$new_tag"
             git push origin "refs/tags/$new_tag"
             echo "new_tag=$new_tag" >> "$GITHUB_OUTPUT"
