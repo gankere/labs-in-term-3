@@ -1,17 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
+project(GTestTests)
 
-# Вариант 1: Используем Git вместо ZIP (более надежно)
 include(FetchContent)
 FetchContent_Declare(
     googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG release-1.12.1  
+    URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
 )
 FetchContent_MakeAvailable(googletest)
 
 add_executable(GTestTests tests.cpp)
-target_link_libraries(GTestTests PRIVATE functions gtest_main)
-
-enable_testing()
-include(GoogleTest)
-gtest_discover_tests(GTestTests)
+target_link_libraries(GTestTests PRIVATE functions gtest gtest_main)

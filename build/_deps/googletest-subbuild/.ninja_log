@@ -1,0 +1,23 @@
+# ninja log v5
+3425	3565	7804246931215443	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	dd3a55b184c9adc1
+3294	3425	7804246929819195	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	9f49581b00cf2fd
+3954	4137	7804246936930177	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	8ae6ad05796a5dca
+3425	3565	7804246931215443	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	dd3a55b184c9adc1
+5	145	7804246897026710	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	af3b2504974e5cb6
+3159	3294	7804246928502720	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	e792b61675052c3b
+3823	3954	7804246935085102	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	8e06c2aba5268a76
+3159	3294	7804246928502720	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	e792b61675052c3b
+145	3152	7804246927086504	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.17.0.zip	b6b32563d7e9c653
+3954	4137	7804246936930177	CMakeFiles/googletest-populate-complete	8ae6ad05796a5dca
+3954	4137	7804246936930177	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate-complete	8ae6ad05796a5dca
+3823	3954	7804246935085102	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	8e06c2aba5268a76
+145	3152	7804246927086504	googletest-populate-prefix/src/v1.17.0.zip	b6b32563d7e9c653
+3695	3823	7804246933788570	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	a7418328a11e8d6
+3695	3823	7804246933788570	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	a7418328a11e8d6
+5	145	7804246897026710	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	af3b2504974e5cb6
+3566	3695	7804246932511984	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	fa251e31edc1ef57
+145	3152	7804246927086504	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	b6b32563d7e9c653
+3566	3695	7804246932511984	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	fa251e31edc1ef57
+3954	4137	7804246936930177	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	8ae6ad05796a5dca
+3294	3425	7804246929819195	D:/TPU_WorkSpace/3 term/lab2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	9f49581b00cf2fd
+145	3152	7804246927086504	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	b6b32563d7e9c653

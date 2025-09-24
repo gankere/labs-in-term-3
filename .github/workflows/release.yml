@@ -2,7 +2,7 @@ name: 'C++ CI'
 
 on:
   push:
-    branches: [ 'lab*' ]  # Теперь срабатывает на любую ветку, начинающуюся с "lab"
+    branches: [ 'lab*' ]  # Срабатывает на любую ветку, начинающуюся с "lab"
 
 permissions:
   contents: write  # Для тегов и релизов
@@ -16,7 +16,7 @@ jobs:
       minor: ${{ steps.bump.outputs.minor }}
       patch: ${{ steps.bump.outputs.patch }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -68,17 +68,17 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: recursive  # Если у вас есть подмодули
 
       - name: Install Ninja (Windows)
-        if: matrix.os == 'windows-latest'
+        if: runner.os == 'Windows'
         run: choco install ninja -y
 
       - name: Install Ninja (Linux)
-        if: matrix.os == 'ubuntu-latest'
+        if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y ninja-build
 
       - name: Configure with Ninja
@@ -93,7 +93,7 @@ jobs:
 
       - name: Run check
         run: |
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
             ./build/lab2.exe
           else
             ./build/lab2
@@ -101,7 +101,7 @@ jobs:
 
       - name: Run tests
         run: |
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
             ./build/gtest_tests/GTestTests.exe
           else
             ./build/gtest_tests/GTestTests
@@ -110,7 +110,7 @@ jobs:
       - name: Package
         run: |
           cmake --install build --prefix package \
-          && if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          && if [[ "${{ runner.os }}" == "Windows" ]]; then
                cpack -G ZIP --config build/CPackConfig.cmake;
              else
                cpack -G DEB --config build/CPackConfig.cmake;

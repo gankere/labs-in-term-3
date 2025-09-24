@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10.0)
+cmake_minimum_required(VERSION 3.10)
 
 # Версионирование
 if(NOT DEFINED PROJECT_VERSION_MAJOR)
@@ -13,7 +13,7 @@ endif()
 
 set(PROJECT_VERSION_PATCH ${PATCH_VERSION})
 
-project(lab2 VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH} LANGUAGES C CXX)
+project(lab2 VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 
 # Основная библиотека
 add_library(functions STATIC functions.cpp)
