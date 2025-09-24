@@ -1,7 +1,7 @@
 #include "functions.h"
 
 int main(){
-    auto records = readAllLines(IP_FILTER_PATH);
+    auto records = readAllLines(IP_FILTER_PATH); //буквально вектор с кортежами
     
     mainSort(records);
     printFullList(records);

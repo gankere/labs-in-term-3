@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build_and_package:
-    needs: bump_version
+    needs: bump_version #Ждет завершения bump_version
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

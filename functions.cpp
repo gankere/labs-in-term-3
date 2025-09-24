@@ -53,14 +53,12 @@ void mainSort(std::vector<ip_record>& ip_pool) {
 }
 
 void printFullList(const std::vector<ip_record>& ip_pool) {
-    std::cout << "\t--- Полный отсортированный список ---\n";
     for (const auto& record : ip_pool) {
         printRecord(record);
     }
 }
 
 void printWith1(const std::vector<ip_record>& ip_pool) {
-    std::cout << "\t--- Первый байт == 1 ---\n";
     for (const auto& record : ip_pool) {
         const ip_address& ip = std::get<0>(record);
         if (std::get<0>(ip) == 1) {
@@ -70,7 +68,6 @@ void printWith1(const std::vector<ip_record>& ip_pool) {
 }
 
 void printWith46And70(const std::vector<ip_record>& ip_pool) {
-    std::cout << "\t--- Первый байт == 46 && Второй байт == 70 ---\n";
     for (const auto& record : ip_pool) {
         const ip_address& ip = std::get<0>(record);
         if (std::get<0>(ip) == 46 && std::get<1>(ip) == 70) {
@@ -80,7 +77,6 @@ void printWith46And70(const std::vector<ip_record>& ip_pool) {
 }
 
 void printWith46(const std::vector<ip_record>& ip_pool) {
-    std::cout << "\t--- Любой байт == 46 ---\n";
     for (const auto& record : ip_pool) {
         const ip_address& ip = std::get<0>(record);
         if (std::get<0>(ip) == 46 ||

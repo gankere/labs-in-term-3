@@ -2,7 +2,7 @@
 #include "functions.h"
 #include <fstream>
 
-// Тесты для функции parseLine
+//parseLine
 TEST(ParseLineTest, BasicParsing) {
     auto record = parseLine("192.168.1.1\ttest2\ttest3");
     const auto& ip = std::get<0>(record);
@@ -13,7 +13,7 @@ TEST(ParseLineTest, BasicParsing) {
     EXPECT_EQ(std::get<3>(ip), 1);
 }
 
-// Тесты для функции mainSort
+//mainSort
 TEST(SortTest, ReverseLexicographicalOrder) {
     std::vector<ip_record> ips = {
         std::make_tuple(std::make_tuple(1, 1, 1, 1), "", ""),
@@ -26,7 +26,7 @@ TEST(SortTest, ReverseLexicographicalOrder) {
     EXPECT_EQ(std::get<0>(std::get<0>(ips[1])), 1);  // 1.1.1.1 вторым
 }
 
-// Тесты для функций фильтрации
+//фильтрация
 TEST(FilterTest, FirstByteEquals1) {
     std::vector<ip_record> ips = {
         std::make_tuple(std::make_tuple(1, 1, 1, 1), "", ""),
@@ -69,6 +69,6 @@ TEST(ReadFileTest, MockFileReading) {
 }
 
 // Простой smoke test
-TEST(SmokeTest, BasicFunctionality) {
-    EXPECT_EQ(1 + 1, 2);  // Простейшая проверка
+TEST(SmokeTest, BasicFunctionality) { 
+    EXPECT_EQ(1 + 1, 2);  //Цель: Убедиться, что тестовая среда работает правильно.
 }

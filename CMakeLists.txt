@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Версионирование
+#Устанавливает версию по умолчанию, если не задана извне
 if(NOT DEFINED PROJECT_VERSION_MAJOR)
   set(PROJECT_VERSION_MAJOR 0)
 endif()
@@ -15,23 +15,20 @@ set(PROJECT_VERSION_PATCH ${PATCH_VERSION})
 
 project(lab2 VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 
-# Основная библиотека
 add_library(functions STATIC functions.cpp)
 target_include_directories(functions PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
-# Исполняемый файл
 add_executable(lab2 main.cpp)
 target_link_libraries(lab2 PRIVATE functions)
 
-# Путь к файлу данных
 target_compile_definitions(lab2 PRIVATE 
     IP_FILTER_PATH="${CMAKE_SOURCE_DIR}/ip_filter.tsv"
 )
 
-# Тесты
 add_subdirectory(gtest_tests)
 
-# CPack
+#CPack
+#Настраивает имя и версию пакета
 set(CPACK_PACKAGE_NAME "Lab2")
 set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}")
