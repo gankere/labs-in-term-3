@@ -2,10 +2,10 @@ name: 'C++ CI'
 
 on:
   push:
-    branches: [ 'lab*' ] 
+    branches: [ 'lab*' ]  # Теперь срабатывает на любую ветку, начинающуюся с "lab"
 
 permissions:
-  contents: write
+  contents: write  # Для тегов и релизов
 
 jobs:
   bump_version:
@@ -31,8 +31,15 @@ jobs:
 
           while true; do
             patch=$((patch+1))
-            new_tag="$major.$minor.$patch"
+            new_tag="$major.$minor.$patch"  # <-- Это должно быть ЧИСТО "X.Y.Z"
 
+            # Проверка: тег должен состоять только из цифр и точек
+            if ! [[ "$new_tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "Invalid tag format: $new_tag" >&2
+              exit 1
+            fi
+
+            # Проверяем, что тег ещё не существует
             if git rev-parse -q --verify "refs/tags/$new_tag" >/dev/null 2>&1; then
               continue
             fi
@@ -40,6 +47,9 @@ jobs:
               continue
             fi
 
+            echo "DEBUG: new_tag = $new_tag"
+            echo "DEBUG: major=$major, minor=$minor, patch=$patch"
+            echo "Creating tag: $new_tag"
             git tag "$new_tag"
             git push origin "refs/tags/$new_tag"
             echo "new_tag=$new_tag" >> "$GITHUB_OUTPUT"
