@@ -1,11 +1,11 @@
-name: 'C++ CI'
+name: C++ CI
 
 on:
   push:
-    branches: [ 'lab*' ]  # Срабатывает на любую ветку, начинающуюся с "lab"
+    branches: [ 'lab*' ] 
 
 permissions:
-  contents: write  # Для тегов и релизов
+  contents: write
 
 jobs:
   bump_version:
@@ -16,48 +16,30 @@ jobs:
       minor: ${{ steps.bump.outputs.minor }}
       patch: ${{ steps.bump.outputs.patch }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Patch version
+      - name: patch version
         id: bump
         shell: bash
         run: |
-          unset new_tag major minor patch last_tag
-
           git fetch --tags --quiet
-
-          # Берём последний семантический тег (vX.Y.Z)
-          last_tag=$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' --sort=-version:refname | head -n1)
-          if [ -z "$last_tag" ]; then
-            last_tag="v1.0.0"
-          fi
+          last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
           last_tag=${last_tag#v}
-
           IFS='.' read -r major minor patch <<< "$last_tag"
 
           while true; do
             patch=$((patch+1))
             new_tag="$major.$minor.$patch"
 
-            # Проверка: тег должен состоять только из цифр и точек
-            if ! [[ "$new_tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-              echo "ERROR: Invalid tag format: '$new_tag'" >&2
-              exit 1
-            fi
-
-            # Проверяем, что тег ещё не существует
             if git rev-parse -q --verify "refs/tags/$new_tag" >/dev/null 2>&1; then
-              echo "Tag '$new_tag' already exists locally, skipping..."
               continue
             fi
             if git ls-remote --tags origin "refs/tags/$new_tag" | grep -q "$new_tag"; then
-              echo "Tag '$new_tag' already exists remotely, skipping..."
               continue
             fi
 
-            echo "✅ Creating tag: $new_tag"
             git tag "$new_tag"
             git push origin "refs/tags/$new_tag"
             echo "new_tag=$new_tag" >> "$GITHUB_OUTPUT"
@@ -76,53 +58,39 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          submodules: recursive  # Если у вас есть подмодули
 
-      - name: Install Ninja (Windows)
-        if: runner.os == 'Windows'
-        run: choco install ninja -y
+      - name: Build
+        shell: bash
+        run: | 
 
-      - name: Install Ninja (Linux)
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y ninja-build
-
-      - name: Check ninja version
-        if: runner.os == 'Linux'
-        run: ninja --version
-
-      - name: Configure with Ninja
-        run: |
           cmake -G "Ninja" -S . -B build \
             -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
             -DPROJECT_VERSION_MINOR=${{ needs.bump_version.outputs.minor }} \
-            -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }}
-
-      - name: Build with Ninja
-        run: cmake --build build
+            -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }} 
+          cmake --build build
 
       - name: Run check
+        shell: bash
         run: |
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
             ./build/lab2.exe
           else
             ./build/lab2
           fi
 
       - name: Run tests
+        shell: bash
         run: |
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
-            ./build/gtest_tests/GTestTests.exe
-          else
-            ./build/gtest_tests/GTestTests
-          fi
+          ./build/gtest_tests/GTestTests
 
       - name: Package
+        shell: bash
         run: |
           cmake --install build --prefix package \
-          && if [[ "${{ runner.os }}" == "Windows" ]]; then
+          && if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
                cpack -G ZIP --config build/CPackConfig.cmake;
              else
                cpack -G DEB --config build/CPackConfig.cmake;
