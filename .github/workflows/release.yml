@@ -2,7 +2,7 @@ name: C++ CI
 
 on:
   push:
-    branches: [ 'lab*' ] 
+    branches: [ 'lab*' ]  # Срабатывает на любую ветку, начинающуюся с "lab"
 
 permissions:
   contents: write
@@ -64,12 +64,11 @@ jobs:
 
       - name: Build
         shell: bash
-        run: | 
-
+        run: |
           cmake -G "Ninja" -S . -B build \
             -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
             -DPROJECT_VERSION_MINOR=${{ needs.bump_version.outputs.minor }} \
-            -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }} 
+            -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }}
           cmake --build build
 
       - name: Run check
