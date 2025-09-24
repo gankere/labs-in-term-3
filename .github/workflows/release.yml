@@ -102,7 +102,7 @@ jobs:
         shell: bash
         run: |
           cmake --install build --prefix package \
-          && if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          && if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
                cpack -G ZIP --config build/CPackConfig.cmake;
              else
                cpack -G DEB --config build/CPackConfig.cmake;
