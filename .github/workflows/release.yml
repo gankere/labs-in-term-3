@@ -2,7 +2,7 @@ name: C++ CI
 
 on:
   push:
-    branches: [ 'lab*' ]  # Срабатывает на любую ветку, начинающуюся с "lab"
+    branches: [ 'lab*' ]
 
 permissions:
   contents: write
@@ -61,6 +61,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Clean build directory
+        run: rm -rf build/
 
       - name: Build
         shell: bash
