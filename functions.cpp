@@ -58,32 +58,42 @@ void printFullList(const std::vector<ip_record>& ip_pool) {
     }
 }
 
-void printWith1(const std::vector<ip_record>& ip_pool) {
+void printFiltered(const std::vector<ip_record>& ip_pool, 
+                   std::function<bool(const ip_address&)> filter) {
     for (const auto& record : ip_pool) {
         const ip_address& ip = std::get<0>(record);
-        if (std::get<0>(ip) == 1) {
+        if (filter(ip)) {
             printRecord(record);
         }
     }
 }
 
-void printWith46And70(const std::vector<ip_record>& ip_pool) {
-    for (const auto& record : ip_pool) {
-        const ip_address& ip = std::get<0>(record);
-        if (std::get<0>(ip) == 46 && std::get<1>(ip) == 70) {
-            printRecord(record);
-        }
-    }
-}
+// void printWith1(const std::vector<ip_record>& ip_pool) {
+//     for (const auto& record : ip_pool) {
+//         const ip_address& ip = std::get<0>(record);
+//         if (std::get<0>(ip) == 1) {
+//             printRecord(record);
+//         }
+//     }
+// }
 
-void printWith46(const std::vector<ip_record>& ip_pool) {
-    for (const auto& record : ip_pool) {
-        const ip_address& ip = std::get<0>(record);
-        if (std::get<0>(ip) == 46 ||
-            std::get<1>(ip) == 46 ||
-            std::get<2>(ip) == 46 ||
-            std::get<3>(ip) == 46) {
-            printRecord(record);
-        }
-    }
-}
+// void printWith46And70(const std::vector<ip_record>& ip_pool) {
+//     for (const auto& record : ip_pool) {
+//         const ip_address& ip = std::get<0>(record);
+//         if (std::get<0>(ip) == 46 && std::get<1>(ip) == 70) {
+//             printRecord(record);
+//         }
+//     }
+// }
+
+// void printWith46(const std::vector<ip_record>& ip_pool) {
+//     for (const auto& record : ip_pool) {
+//         const ip_address& ip = std::get<0>(record);
+//         if (std::get<0>(ip) == 46 ||
+//             std::get<1>(ip) == 46 ||
+//             std::get<2>(ip) == 46 ||
+//             std::get<3>(ip) == 46) {
+//             printRecord(record);
+//         }
+//     }
+// }
