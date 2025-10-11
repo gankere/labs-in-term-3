@@ -2,7 +2,8 @@
 #include <stdexcept>
 #include <memory>
 
-//Последовательный контейнер с резервированием
+//Последовательный контейнер с резервированием 
+//[0][1][2][3][4][ ][ ][ ] элементы расположены подряд
 template <typename T> //для работы с любым типом данных
 class MySequentialContainer {
 private:
@@ -56,7 +57,7 @@ public:
         return data[index];
     }
 
-    void insert(size_t pos, const T& value) {
+    void insert(size_t pos, const T&& value) {
         if (pos > current_size) throw std::out_of_range("Insert position out of range");
 
         if (current_size >= capacity) {
@@ -66,7 +67,7 @@ public:
         for (size_t i = current_size; i > pos; --i) {
             data[i] = std::move(data[i - 1]);
         }
-        data[pos] = value;
+        data[pos] = std::move(value);
         current_size++;
     }
 
@@ -78,7 +79,6 @@ public:
         }
         current_size--;
     }
-
     //срабатывает, при создании нового контейнера
     MySequentialContainer(MySequentialContainer&& other) noexcept = default; //Перемещающий конструктор (генерируется автоматически)
     //срабатывает, при уже существующем контейнере
@@ -117,11 +117,11 @@ public:
     // Итераторы для последовательного доступа к элементам
     class iterator {
     private:
-        T* ptr;
+        T* ptr; //Создаём указатель на ячейку
     public:
-        iterator(T* p) : ptr(p) {}
-        T& operator*() const { return *ptr; }
-        iterator& operator++() { ++ptr; return *this; }
+        iterator(T* p) : ptr(p) {} //Конструктор: создаёт итератор, указывающий на массив p
+        T& operator*() const { return *ptr; } //Оператор *: получаем значение ячейки из массива, на который указывает итератор
+        iterator& operator++() { ++ptr; return *this; } //переход к следующией ячейке
         bool operator!=(const iterator& other) const { return ptr != other.ptr; }
         bool operator==(const iterator& other) const { return ptr == other.ptr; }
     };
@@ -136,7 +136,7 @@ public:
         bool operator!=(const const_iterator& other) const { return ptr != other.ptr; }
         bool operator==(const const_iterator& other) const { return ptr == other.ptr; }
     };
-
+    // Реализация итераторов
     iterator begin() { return iterator(data.get()); }
     iterator end() { return iterator(data.get() + current_size); }
     const_iterator begin() const { return const_iterator(data.get()); }
@@ -151,14 +151,15 @@ public:
     }
 };
 
-// --- I, III, IV, V: Двунаправленный списковый контейнер ---
+//Двунаправленный списковый контейнер
+//[0] <-> [1] <-> [2] <-> [3] элементы разбросаны, связаны указателями
 template <typename T>
 class MyListContainer {
 private:
     struct Node {
         T data;
-        std::unique_ptr<Node> next;
-        Node* prev;
+        std::unique_ptr<Node> next; // указатель вперед
+        Node* prev; // указатель назад
 
         Node(const T& value) : data(value), next(nullptr), prev(nullptr) {}
     };
@@ -170,11 +171,9 @@ private:
 public:
     MyListContainer() : head(nullptr), tail(nullptr), current_size(0) {}
 
-    // Основной интерфейс
     void push_back(const T& value) {
-        // Используем new вместо make_unique
-        std::unique_ptr<Node> new_node(new Node(value));
-        Node* new_node_ptr = new_node.get();
+        std::unique_ptr<Node> new_node(new Node(value)); //создали новый узел
+        Node* new_node_ptr = new_node.get(); //получили указатель на узел
 
         if (!tail) {
             head = std::move(new_node);
@@ -193,7 +192,7 @@ public:
         if (index >= current_size) throw std::out_of_range("Index out of range");
         
         Node* current = head.get();
-        for (size_t i = 0; i < index; ++i) {
+        for (size_t i = 0; i < index; ++i) { //Нужно пройти все предыдущие узлы
             current = current->next.get();
         }
         return current->data;
@@ -228,8 +227,7 @@ public:
             return;
         }
 
-        // Находим узел перед позицией вставки
-        Node* current = head.get();
+        Node* current = head.get();// Находим узел перед позицией вставки
         for (size_t i = 0; i < pos - 1; ++i) {
             current = current->next.get();
         }
@@ -259,16 +257,13 @@ void erase(size_t pos) {
         return;
     }
 
-    // Упрощенный и безопасный подход:
-    // Находим узел ПЕРЕД тем, который нужно удалить
     Node* prev_node = head.get();
     for (size_t i = 0; i < pos - 1; ++i) {
         prev_node = prev_node->next.get();
     }
 
-    // Теперь prev_node - это узел перед удаляемым
-    if (prev_node->next) {
-        // Сохраняем указатель на следующий узел после удаляемого
+    
+    if (prev_node->next) {// Теперь prev_node - это узел перед удаляемым
         std::unique_ptr<Node> node_to_remove = std::move(prev_node->next);
         
         if (node_to_remove->next) {
@@ -279,18 +274,15 @@ void erase(size_t pos) {
             prev_node->next = nullptr;
             tail = prev_node;
         }
-        
-        // node_to_remove автоматически удалится при выходе из scope
     }
 
     current_size--;
 }
 
-    // Семантика перемещения
     MyListContainer(MyListContainer&& other) noexcept = default;
     MyListContainer& operator=(MyListContainer&& other) noexcept = default;
 
-    // Копирование
+    //Копирование
     MyListContainer(const MyListContainer& other) : head(nullptr), tail(nullptr), current_size(0) {
         Node* current = other.head.get();
         while (current) {
@@ -298,7 +290,6 @@ void erase(size_t pos) {
             current = current->next.get();
         }
     }
-
     MyListContainer& operator=(const MyListContainer& other) {
         if (this != &other) {
             head = nullptr;
@@ -314,7 +305,7 @@ void erase(size_t pos) {
         return *this;
     }
 
-    // Итераторы
+    //Итераторы
     class iterator {
     private:
         Node* ptr;
@@ -349,6 +340,7 @@ void erase(size_t pos) {
             ++(*this);
             return temp;
         }
+
         bool operator!=(const const_iterator& other) const { return ptr != other.ptr; }
         bool operator==(const const_iterator& other) const { return ptr == other.ptr; }
     };
@@ -369,7 +361,8 @@ void erase(size_t pos) {
     }
 };
 
-// --- III, IV, V: Однонаправленный списковый контейнер ---
+//Однонаправленный списковый контейнер
+// [0] -> [1] -> [2] -> [3] -> nullptr только указатели вперед
 template <typename T>
 class MySingleListContainer {
 private:
@@ -386,7 +379,6 @@ private:
 public:
     MySingleListContainer() : head(nullptr), current_size(0) {}
 
-    // Основной интерфейс
     void push_back(const T& value) {
         std::unique_ptr<Node> new_node(new Node(value));
         
@@ -413,7 +405,6 @@ public:
         }
         return current->data;
     }
-
     const T& operator[](size_t index) const {
         if (index >= current_size) throw std::out_of_range("Index out of range");
         
@@ -469,7 +460,6 @@ public:
         current_size--;
     }
 
-    // Семантика перемещения
     MySingleListContainer(MySingleListContainer&& other) noexcept = default;
     MySingleListContainer& operator=(MySingleListContainer&& other) noexcept = default;
 
@@ -481,7 +471,6 @@ public:
             current = current->next.get();
         }
     }
-
     MySingleListContainer& operator=(const MySingleListContainer& other) {
         if (this != &other) {
             head = nullptr;
@@ -515,7 +504,6 @@ public:
         bool operator!=(const iterator& other) const { return ptr != other.ptr; }
         bool operator==(const iterator& other) const { return ptr == other.ptr; }
     };
-
     class const_iterator {
     private:
         const Node* ptr;
@@ -551,7 +539,7 @@ public:
     }
 };
 
-// ==================== ДЕМОНСТРАЦИЯ ВОЗМОЖНОСТЕЙ ====================
+//ДЕМОНСТРАЦИЯ ВОЗМОЖНОСТЕЙ
 void demo_sequential() {
   std::cout << "=== ПОСЛЕДОВАТЕЛЬНЫЙ КОНТЕЙНЕР ===" << std::endl;
   MySequentialContainer<int> seq;
