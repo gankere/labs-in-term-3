@@ -197,7 +197,6 @@ public:
         }
         return current->data;
     }
-
     const T& operator[](size_t index) const {
         if (index >= current_size) throw std::out_of_range("Index out of range");
         
@@ -246,37 +245,45 @@ public:
         current_size++;
     }
 
-    void erase(size_t pos) {
-        if (pos >= current_size) throw std::out_of_range("Erase position out of range");
+void erase(size_t pos) {
+    if (pos >= current_size) throw std::out_of_range("Erase position out of range");
 
-        if (pos == 0) {
-            if (head) {
-                head = std::move(head->next);
-                if (head) head->prev = nullptr;
-                else tail = nullptr;
-            }
-            current_size--;
-            return;
+    if (pos == 0) {
+        if (head) {
+            head = std::move(head->next);
+            if (head) head->prev = nullptr;
+            else tail = nullptr;
         }
-
-        // Находим узел для удаления
-        Node* current = head.get();
-        for (size_t i = 0; i < pos; ++i) {
-            current = current->next.get();
-        }
-
-        if (current->prev) {
-            current->prev->next = std::move(current->next);
-        }
-        if (current->next) {
-            current->next->prev = current->prev;
-        }
-        if (current == tail) {
-            tail = current->prev;
-        }
-
         current_size--;
+        return;
     }
+
+    // Упрощенный и безопасный подход:
+    // Находим узел ПЕРЕД тем, который нужно удалить
+    Node* prev_node = head.get();
+    for (size_t i = 0; i < pos - 1; ++i) {
+        prev_node = prev_node->next.get();
+    }
+
+    // Теперь prev_node - это узел перед удаляемым
+    if (prev_node->next) {
+        // Сохраняем указатель на следующий узел после удаляемого
+        std::unique_ptr<Node> node_to_remove = std::move(prev_node->next);
+        
+        if (node_to_remove->next) {
+            prev_node->next = std::move(node_to_remove->next);
+            prev_node->next->prev = prev_node;
+        } else {
+            // Удаляемый узел был последним
+            prev_node->next = nullptr;
+            tail = prev_node;
+        }
+        
+        // node_to_remove автоматически удалится при выходе из scope
+    }
+
+    current_size--;
+}
 
     // Семантика перемещения
     MyListContainer(MyListContainer&& other) noexcept = default;
