@@ -743,28 +743,9 @@ void demo_singly_linked() {
   std::cout << *it << std::endl;
 }
 
-void demo_comparison() {
-  std::cout << "\n=== СРАВНЕНИЕ КОНТЕЙНЕРОВ ===" << std::endl;
-  
-  MySequentialContainer<int> seq;
-  MyListContainer<int> dll;
-  MySingleListContainer<int> sll;
-  
-  for (int i = 0; i < 5; i++) {
-    seq.push_back(i);
-    dll.push_back(i);
-    sll.push_back(i);
-  }
-  
-  std::cout << "seq[3] = " << seq[3] << " (O(1) - прямой доступ)" << std::endl;
-  std::cout << "dll[3] = " << dll[3] << " (O(n) - обход узлов)" << std::endl;
-  std::cout << "sll[3] = " << sll[3] << " (O(n) - обход узлов)" << std::endl;
-}
-
 int main() {
   demo_sequential();
   demo_doubly_linked();
   demo_singly_linked();
-  demo_comparison();
   return 0;
 }
