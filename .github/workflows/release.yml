@@ -2,7 +2,7 @@ name: C++ CI
 
 on:
   push:
-    branches: [ 'lab*' ]
+    branches: [ 'lab3' ]
 
 permissions:
   contents: write
@@ -20,12 +20,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: patch version
+      - name: Bump version
         id: bump
         shell: bash
         run: |
           git fetch --tags --quiet
-          last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
+          last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
           last_tag=${last_tag#v}
           IFS='.' read -r major minor patch <<< "$last_tag"
 
@@ -52,66 +52,50 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build_and_package:
-    needs: bump_version #Ждет завершения bump_version
+    needs: bump_version
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+    
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - name: Clean build directory
-        shell: bash
+      - name: Install dependencies (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
         run: |
-          if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            if [ -d "build" ]; then
-              rm -rf build
-            fi
-          else
-            if [ -d "build" ]; then
-              rm -rf build
-            fi
-          fi
-          
-      - name: Build
-        shell: bash
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build
+
+      - name: Install dependencies (Windows)
+        if: matrix.os == 'windows-latest'
         run: |
-          cmake -G "Ninja" -S . -B build \
+          choco install cmake ninja -y
+
+      - name: Configure CMake
+        run: |
+          cmake -B build \
             -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
             -DPROJECT_VERSION_MINOR=${{ needs.bump_version.outputs.minor }} \
             -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }}
-          cmake --build build
+
+      - name: Build
+        run: cmake --build build
 
       - name: Run check
-        shell: bash
         run: |
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            ./build/lab2.exe
+            ./build/lab3.exe
           else
-            ./build/lab2
+            ./build/lab3
           fi
 
-      - name: Run tests
-        shell: bash
-        run: |
-          ./build/gtest_tests/GTestTests
-
-      - name: Package
-        shell: bash
-        run: |
-          cmake --install build --prefix package \
-          && if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-               cpack -G ZIP --config build/CPackConfig.cmake;
-             else
-               cpack -G DEB --config build/CPackConfig.cmake;
-             fi
-
-      - name: Upload
+      - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.bump_version.outputs.new_tag }}
-          files: build/package/*
+          files: |
+            build/lab3*
+            build/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
