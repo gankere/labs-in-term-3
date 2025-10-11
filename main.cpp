@@ -79,8 +79,9 @@ public:
         current_size--;
     }
 
-    
+    //срабатывает, при создании нового контейнера
     MySequentialContainer(MySequentialContainer&& other) noexcept = default; //Перемещающий конструктор (генерируется автоматически)
+    //срабатывает, при уже существующем контейнере
     MySequentialContainer& operator=(MySequentialContainer&& other) noexcept = default; //Перемещающий оператор присваивания (генерируется автоматически)
 
     // Копирование

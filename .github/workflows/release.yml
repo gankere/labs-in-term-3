@@ -65,15 +65,15 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build
+          sudo apt-get install -y cmake g++
 
       - name: Install dependencies (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          choco install cmake ninja -y
+          choco install cmake -y
 
       - name: Configure CMake
-        shell: bash  # ⬅️ ВАЖНО: используем bash на всех ОС
+        shell: bash
         run: |
           cmake -B build \
             -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
@@ -84,21 +84,51 @@ jobs:
         shell: bash
         run: cmake --build build
 
-      - name: Run check
+      - name: Find and Run executable
         shell: bash
         run: |
+          echo "=== Searching for executable ==="
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            ./build/lab3.exe
+            echo "Windows build structure:"
+            find ./build -name "*.exe" | head -10
+            if [ -f "./build/Debug/lab3.exe" ]; then
+              echo "Running: ./build/Debug/lab3.exe"
+              ./build/Debug/lab3.exe
+            elif [ -f "./build/Release/lab3.exe" ]; then
+              echo "Running: ./build/Release/lab3.exe"
+              ./build/Release/lab3.exe
+            elif [ -f "./build/lab3.exe" ]; then
+              echo "Running: ./build/lab3.exe"
+              ./build/lab3.exe
+            else
+              echo "ERROR: No executable found in expected locations!"
+              echo "All files in build directory:"
+              find ./build -type f | head -20
+              exit 1
+            fi
           else
-            ./build/lab3
+            echo "Linux build structure:"
+            find ./build -name "lab3" | head -10
+            if [ -f "./build/lab3" ]; then
+              echo "Running: ./build/lab3"
+              ./build/lab3
+            else
+              echo "ERROR: No executable found in expected locations!"
+              echo "All files in build directory:"
+              find ./build -type f | head -20
+              exit 1
+            fi
           fi
 
       - name: Create Release
+        if: matrix.os == 'ubuntu-latest'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.bump_version.outputs.new_tag }}
           files: |
-            build/lab3*
-            build/*.exe
+            build/lab3
+            build/lab3.exe
+            build/Debug/lab3.exe
+            build/Release/lab3.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
