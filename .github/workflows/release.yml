@@ -73,6 +73,7 @@ jobs:
           choco install cmake ninja -y
 
       - name: Configure CMake
+        shell: bash  # ⬅️ ВАЖНО: используем bash на всех ОС
         run: |
           cmake -B build \
             -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
@@ -80,9 +81,11 @@ jobs:
             -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }}
 
       - name: Build
+        shell: bash
         run: cmake --build build
 
       - name: Run check
+        shell: bash
         run: |
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             ./build/lab3.exe
