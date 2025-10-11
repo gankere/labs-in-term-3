@@ -551,29 +551,54 @@ void demo_sequential() {
   seq.print();
   std::cout << "Размер: " << seq.size() << std::endl;
 
+  std::cout << "seq[0] = " << seq[0] << std::endl;
+  std::cout << "seq[5] = " << seq[5] << std::endl;
+  seq[2] = 100;
+  std::cout << "После seq[2] = 100: ";
+  seq.print();
+
   seq.erase(2); 
   seq.erase(3);
   seq.erase(4);
-  std::cout << "После удаления 3го, 5го и 7го элементов: ";
+  std::cout << "Минус 3й, 5й, 7й элемент: ";
   seq.print();
 
   seq.insert(0, 10);
-  std::cout << "После добавления 10 в начало: ";
+  std::cout << "10 в начало: ";
   seq.print();
 
-  seq.insert(4, 20);
-  std::cout << "После добавления 20 в середину: ";
+  seq.insert(4, 212);
+  std::cout << "212 в середину: ";
   seq.print();
 
-  seq.push_back(30);
-  std::cout << "После добавления 30 в конец: ";
+  seq.push_back(27);
+  std::cout << "27 в конец: ";
   seq.print();
 
-  std::cout << "Итерация с помощью итераторов: ";
+  std::cout << "Прямой обход: ";
   for (auto it = seq.begin(); it != seq.end(); ++it) {
     std::cout << *it << " ";
   }
   std::cout << std::endl;
+
+  MySequentialContainer<int> seq_moved = std::move(seq);
+  std::cout << "После перемещения - новый контейнер: ";
+  seq_moved.print();
+  std::cout << "Исходный контейнер размер: " << seq.size() << std::endl;
+
+  MySequentialContainer<int> seq_copied = seq_moved;
+  std::cout << "Копия контейнера: ";
+  seq_copied.print();
+  seq_copied[0] = 999;
+  std::cout << "После изменения копии [0]=999:" << std::endl;
+  std::cout << "Копия: ";
+  seq_copied.print();
+  std::cout << "Оригинал: ";
+  seq_moved.print();
+
+  seq_copied.push_back(42);
+  std::cout << "После push_back(42): ";
+  seq_copied.print();
 }
 
 void demo_doubly_linked() {
@@ -585,29 +610,62 @@ void demo_doubly_linked() {
   }
   std::cout << "После добавления 0-9: ";
   dll.print();
-  
   std::cout << "Размер: " << dll.size() << std::endl;
+
+  std::cout << "dll[0] = " << dll[0] << std::endl;
+  std::cout << "dll[5] = " << dll[5] << std::endl;
+  dll[2] = 200;
+  std::cout << "После dll[2] = 200: ";
+  dll.print();
 
   dll.erase(2); 
   dll.erase(3);
   dll.erase(4);
-  std::cout << "После удаления 3го, 5го и 7го элементов: ";
+  std::cout << "Минус 3й, 5й, 7й элемент: ";
   dll.print();
 
   dll.insert(0, 10);
-  std::cout << "После добавления 10 в начало: ";
+  std::cout << "10 в начало: ";
   dll.print();
 
-  dll.insert(4, 20);
-  std::cout << "После добавления 20 в середину: ";
+  dll.insert(4, 241);
+  std::cout << "241 в середину: ";
   dll.print();
 
-  dll.push_back(30);
-  std::cout << "После добавления 30 в конец: ";
+  dll.push_back(34);
+  std::cout << "34 в конец: ";
   dll.print();
 
-  std::cout << "Итерация с помощью итераторов: ";
+  std::cout << "Прямой обход: ";
   for (auto it = dll.begin(); it != dll.end(); ++it) {
+    std::cout << *it << " ";
+  }
+  std::cout << std::endl;
+
+  std::cout << "Изменение через итераторы (умножить на 2): ";
+  for (auto it = dll.begin(); it != dll.end(); ++it) {
+    *it = *it * 2;
+  }
+  dll.print();
+
+  MyListContainer<int> dll_moved = std::move(dll);
+  std::cout << "После перемещения - новый контейнер: ";
+  dll_moved.print();
+  std::cout << "Исходный контейнер размер: " << dll.size() << std::endl;
+
+  MyListContainer<int> dll_copied = dll_moved;
+  std::cout << "Копия контейнера: ";
+  dll_copied.print();
+  dll_copied[0] = 777;
+  std::cout << "После изменения копии [0]=777:" << std::endl;
+  std::cout << "Копия: ";
+  dll_copied.print();
+  std::cout << "Оригинал: ";
+  dll_moved.print();
+
+  const MyListContainer<int> const_dll = dll_copied;
+  std::cout << "Обход const контейнера: ";
+  for (auto it = const_dll.begin(); it != const_dll.end(); ++it) {
     std::cout << *it << " ";
   }
   std::cout << std::endl;
@@ -622,37 +680,91 @@ void demo_singly_linked() {
   }
   std::cout << "После добавления 0-9: ";
   sll.print();
-
   std::cout << "Размер: " << sll.size() << std::endl;
+
+  std::cout << "sll[0] = " << sll[0] << std::endl;
+  std::cout << "sll[5] = " << sll[5] << std::endl;
+  sll[2] = 300;
+  std::cout << "После sll[2] = 300: ";
+  sll.print();
 
   sll.erase(2);
   sll.erase(3);
   sll.erase(4);
-  std::cout << "После удаления 3го, 5го и 7го элементов: ";
+  std::cout << "Минус 3й, 5й, 7й элемент: ";
   sll.print();
 
   sll.insert(0, 10);
-  std::cout << "После добавления 10 в начало: ";
+  std::cout << "10 в начало: ";
   sll.print();
 
-  sll.insert(4, 20);
-  std::cout << "После добавления 20 в середину: ";
+  sll.insert(4, 51);
+  std::cout << "51 в середину: ";
   sll.print();
 
-  sll.push_back(30);
-  std::cout << "После добавления 30 в конец: ";
+  sll.push_back(31);
+  std::cout << "31 в конец: ";
   sll.print();
 
-  std::cout << "Итерация с помощью итераторов: ";
+  std::cout << "Прямой обход: ";
   for (auto it = sll.begin(); it != sll.end(); ++it) {
     std::cout << *it << " ";
   }
   std::cout << std::endl;
+
+  std::cout << "Поиск элемента 51 через итераторы: ";
+  for (auto it = sll.begin(); it != sll.end(); ++it) {
+    if (*it == 51) {
+      std::cout << "найден!";
+      break;
+    }
+  }
+  std::cout << std::endl;
+
+  MySingleListContainer<int> sll_moved = std::move(sll);
+  std::cout << "После перемещения - новый контейнер: ";
+  sll_moved.print();
+  std::cout << "Исходный контейнер размер: " << sll.size() << std::endl;
+
+  MySingleListContainer<int> sll_copied = sll_moved;
+  std::cout << "Копия контейнера: ";
+  sll_copied.print();
+  sll_copied[0] = 888;
+  std::cout << "После изменения копии [0]=888:" << std::endl;
+  std::cout << "Копия: ";
+  sll_copied.print();
+  std::cout << "Оригинал: ";
+  sll_moved.print();
+
+  std::cout << "Доступ по индексу sll[7]: " << sll_copied[7] << std::endl;
+  std::cout << "Доступ через итераторы до 7-го элемента: ";
+  auto it = sll_copied.begin();
+  for (int i = 0; i < 7; ++i) ++it;
+  std::cout << *it << std::endl;
+}
+
+void demo_comparison() {
+  std::cout << "\n=== СРАВНЕНИЕ КОНТЕЙНЕРОВ ===" << std::endl;
+  
+  MySequentialContainer<int> seq;
+  MyListContainer<int> dll;
+  MySingleListContainer<int> sll;
+  
+  for (int i = 0; i < 5; i++) {
+    seq.push_back(i);
+    dll.push_back(i);
+    sll.push_back(i);
+  }
+  
+  std::cout << "seq[3] = " << seq[3] << " (O(1) - прямой доступ)" << std::endl;
+  std::cout << "dll[3] = " << dll[3] << " (O(n) - обход узлов)" << std::endl;
+  std::cout << "sll[3] = " << sll[3] << " (O(n) - обход узлов)" << std::endl;
 }
 
 int main() {
   demo_sequential();
   demo_doubly_linked();
   demo_singly_linked();
+  demo_comparison();
   return 0;
 }
