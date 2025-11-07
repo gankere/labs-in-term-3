@@ -69,7 +69,9 @@ jobs:
 
       - name: Clean build directory
         run: |
-          if [ -d "build" ]; then
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            if exist build rmdir /s /q build
+          else
             rm -rf build
           fi
 
