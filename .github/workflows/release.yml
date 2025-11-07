@@ -69,11 +69,11 @@ jobs:
 
       - name: Clean build directory
         run: |
-          if [ "$RUNNER_OS" = "Windows" ]; then
-            if (Test-Path 'build') { Remove-Item -Recurse -Force 'build' }
-          else
+          if [ -d "build" ]; then
+            echo "Removing existing build directory..."
             rm -rf build
           fi
+        shell: bash
 
       - name: Install dependencies (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
@@ -85,9 +85,9 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           choco install cmake -y
+        shell: pwsh
 
       - name: Configure CMake
-        shell: bash
         run: |
           cmake -B build \
             -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
@@ -95,28 +95,20 @@ jobs:
             -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }}
 
       - name: Build
-        shell: bash
         run: cmake --build build
 
       - name: Find and Run executable
-        shell: bash
         run: |
           echo "=== Searching for executable ==="
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             echo "Windows build structure:"
             find ./build -name "*.exe" | head -10
-            if [ -f "./build/Debug/lab4.exe" ]; then
-              echo "Running: ./build/Debug/lab4.exe"
-              ./build/Debug/lab4.exe
-            elif [ -f "./build/Release/lab4.exe" ]; then
-              echo "Running: ./build/Release/lab4.exe"
-              ./build/Release/lab4.exe
-            elif [ -f "./build/lab4.exe" ]; then
-              echo "Running: ./build/lab4.exe"
-              ./build/lab4.exe
+            EXECUTABLE=$(find ./build -name "*.exe" | grep -E "(lab4|Lab4)" | head -1)
+            if [ -n "$EXECUTABLE" ]; then
+              echo "Running: $EXECUTABLE"
+              "$EXECUTABLE"
             else
-              echo "ERROR: No executable found in expected locations!"
-              echo "All files in build directory:"
+              echo "ERROR: No executable found!"
               find ./build -type f | head -20
               exit 1
             fi
@@ -127,12 +119,12 @@ jobs:
               echo "Running: ./build/lab4"
               ./build/lab4
             else
-              echo "ERROR: No executable found in expected locations!"
-              echo "All files in build directory:"
+              echo "ERROR: No executable found!"
               find ./build -type f | head -20
               exit 1
             fi
           fi
+        shell: bash
 
       - name: Create Release
         if: matrix.os == 'ubuntu-latest'
