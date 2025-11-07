@@ -25,8 +25,14 @@ jobs:
         shell: bash
         run: |
           git fetch --tags --quiet
-          last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
-          last_tag=${last_tag#v}
+          # Получаем последний тег, начинающийся с v или без v, но в формате X.Y.Z
+          last_tag=$(git tag --sort=-v:refname | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
+          if [ -z "$last_tag" ]; then
+            last_tag="0.0.0"
+          else
+            last_tag=${last_tag#v}  # убираем v, если есть
+          fi
+
           IFS='.' read -r major minor patch <<< "$last_tag"
 
           while true; do
