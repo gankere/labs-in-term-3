@@ -13,8 +13,8 @@ jobs:
     outputs:
       new_tag: ${{ steps.bump.outputs.new_tag }}
       major: ${{ steps.bump.outputs.major }}
-      minor: ${{ steps.bump_version.outputs.minor }}
-      patch: ${{ steps.bump_version.outputs.patch }}
+      minor: ${{ steps.bump.outputs.minor }}
+      patch: ${{ steps.bump.outputs.patch }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -99,47 +99,34 @@ jobs:
         shell: bash
         run: cmake --build build
 
-      - name: Debug build info
+      - name: Find and Run executable
         shell: bash
         run: |
-          echo "=== Build structure ==="
-          find ./build -type f -name "*.exe" -o -name "lab4" | head -20
-          echo "=== File sizes ==="
-          find ./build -type f \( -name "*.exe" -o -name "lab4" \) -exec ls -la {} \; | head -10
-
-      - name: Run with debug output (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        shell: bash
-        run: |
-          if [ -f "./build/lab4" ]; then
-            echo "=== Running on Linux ==="
-            ./build/lab4
-          else
-            echo "ERROR: Linux executable not found"
-            exit 1
-          fi
-
-      - name: Run with debug output (Windows)
-        if: matrix.os == 'windows-latest'
-        shell: cmd
-        run: |
-          echo "=== Running on Windows ==="
-          build\Debug\lab4.exe
-        continue-on-error: true
-
-      - name: Run with GDB debug (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        shell: bash
-        run: |
-          if command -v gdb >/dev/null 2>&1; then
-            if [ -f "./build/lab4" ]; then
-              echo "=== Running with GDB ==="
-              gdb -ex "run" -ex "bt" -ex "quit" --args ./build/lab4
+          echo "=== Searching for executable ==="
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            echo "Windows build structure:"
+            find ./build -name "*.exe" | head -10
+            EXECUTABLE=$(find ./build -name "*.exe" | grep -E "(lab4|Lab4)" | head -1)
+            if [ -n "$EXECUTABLE" ]; then
+              echo "Running: $EXECUTABLE"
+              "$EXECUTABLE"
+            else
+              echo "ERROR: No executable found!"
+              find ./build -type f | head -20
+              exit 1
             fi
           else
-            echo "GDB not available"
+            echo "Linux build structure:"
+            find ./build -name "lab4" | head -10
+            if [ -f "./build/lab4" ]; then
+              echo "Running: ./build/lab4"
+              ./build/lab4
+            else
+              echo "ERROR: No executable found!"
+              find ./build -type f | head -20
+              exit 1
+            fi
           fi
-        continue-on-error: true
 
       - name: Create Release
         if: matrix.os == 'ubuntu-latest'
@@ -148,5 +135,8 @@ jobs:
           tag_name: ${{ needs.bump_version.outputs.new_tag }}
           files: |
             build/lab4
+            build/lab4.exe
+            build/Debug/lab4.exe
+            build/Release/lab4.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

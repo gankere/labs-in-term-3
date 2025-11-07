@@ -10,8 +10,13 @@
 template <class T, std::size_t N = 5> //N - сколько выделить
 class my_allocator {
 private:
-    std::vector<T*> memory_pool;    //пул зарезервированных блоков
-    std::vector<T*> free_list;      //список свободных слотов
+    // Структура для отслеживания блока
+    struct BlockInfo {
+        T* block_ptr;
+        std::vector<bool> is_free; // true = свободен, false = занят
+    };
+
+    std::vector<BlockInfo> blocks_info; // Пул зарезервированных блоков и их состояния
 
 public:
     //переименование типов
@@ -43,69 +48,70 @@ public:
         }
 
         //для единичных элементов
-        if (free_list.empty()) { //если нет свободных слотов
-            T* block = static_cast<T*>(::operator new(N * sizeof(T))); //выделяем память под новый блок из N элементов
-            memory_pool.push_back(block); //сохраняем указатель на блок
-
+        // Ищем свободный слот в уже выделенных блоках
+        for (auto& block_info : blocks_info) {
             for (std::size_t i = 0; i < N; ++i) {
-                free_list.push_back(block + i); //в free_list "новые" свободные ячейки
+                if (block_info.is_free[i]) {
+                    block_info.is_free[i] = false; // помечаем как занятый
+                    return block_info.block_ptr + i; // возвращаем указатель
+                }
             }
         }
-        T* ptr = free_list.back(); //берём свободную ячейку с конца
-        free_list.pop_back(); // минусуем эту ячейку
-        return ptr;
+
+        //если нет свободных слотов, выделяем новый блок
+        T* block = static_cast<T*>(::operator new(N * sizeof(T))); //выделяем память под новый блок из N элементов
+        blocks_info.push_back({block, std::vector<bool>(N, true)}); //сохраняем указатель на блок и вектор занятости (все свободны)
+
+        // Помечаем первый слот как занятый
+        blocks_info.back().is_free[0] = false;
+        return block; //возвращаем указатель на первый элемент нового блока
     }
 
     void deallocate(T* p, std::size_t n) {
         //освобождение одиночного элемента
         if (n == 1) {
-            free_list.push_back(p); //возврат указателя в свободные слоты
-            try_free_empty_blocks(); //если блок стал свободным - освобождаем (что освобождаем?)
-        } else { 
+            // Найти, какому блоку принадлежит p
+            for (auto& block_info : blocks_info) {
+                if (p >= block_info.block_ptr && p < block_info.block_ptr + N) {
+                    std::size_t idx = p - block_info.block_ptr; // вычисляем индекс
+                    block_info.is_free[idx] = true; //возврат указателя в свободные слоты
+                    break; // выходим из цикла, нашли
+                }
+            }
+            try_free_empty_blocks(); //если блок стал свободным - освобождаем
+        } else {
         //большие блоки освобождаем сразу
             ::operator delete(p);
         }
     }
-   
+
     void try_free_empty_blocks() { //освобождение пустых блоков
-        if (free_list.size() < N) return; //свободных слотов меньше N? -> нет пустогоблока
-
-        //поиск пустых блоков
-        for (auto it = memory_pool.begin(); it != memory_pool.end(); ) {
-            T* block = *it;
-            std::size_t free_count = 0;
-
-            for (T* elem : free_list) {
-                if (elem >= block && elem < block + N) {
-                    free_count++;
+        // Цикл по блокам (итератор нужен для erase)
+        for (auto it = blocks_info.begin(); it != blocks_info.end(); ) {
+            // Проверяем, все ли слоты в блоке свободны
+            bool all_free = true;
+            for (bool is_slot_free : it->is_free) {
+                if (!is_slot_free) {
+                    all_free = false;
+                    break;
                 }
             }
-           
-            if (free_count == N) { //все элементы блока свободны - освобождаем блок
-                //std::remove_if перемещает неподходящие элементы в начало,
-                //erase удаляет оставшиеся в конце
-                free_list.erase(
-                    std::remove_if(free_list.begin(), free_list.end(), [block, this](T* elem) {
-                            return elem >= block && elem < block + N;
-                        }),
-                    free_list.end()
-                );
 
+            if (all_free) { //все элементы блока свободны - освобождаем блок
                 // Освобождаем память и удаляем блок из пула
-                ::operator delete(block);
-                it = memory_pool.erase(it);
+                ::operator delete(it->block_ptr);
+                it = blocks_info.erase(it); // erase возвращает итератор на следующий элемент
             } else {
-                ++it;
+                ++it; // переходим к следующему блоку
             }
         }
     }
 
     void clear() { //полное освобождение памяти
-        for (T* block : memory_pool) {
-            ::operator delete(block); //удаляем памяти по указателю
+        for (const auto& block_info : blocks_info) {
+            ::operator delete(block_info.block_ptr); //удаляем памяти по указателю
         }
-        memory_pool.clear(); //удаляем сами указатели
-        free_list.clear(); //удаление указателей свободных ячеек
+        blocks_info.clear(); //удаляем сами блоки
     }
 
     ///////////////////////////////////////////////////////////////
