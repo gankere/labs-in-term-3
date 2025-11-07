@@ -82,7 +82,8 @@ public:
             }
            
             if (free_count == N) { //все элементы блока свободны - освобождаем блок
-                // Удаляем элементы этого блока из free_list
+                //std::remove_if перемещает неподходящие элементы в начало,
+                //erase удаляет оставшиеся в конце
                 free_list.erase(
                     std::remove_if(free_list.begin(), free_list.end(),
                         [block, this](T* elem) {

@@ -67,13 +67,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - name: Clean build directory
-      #   run: |
-      #     if [ "$RUNNER_OS" = "Windows" ]; then
-      #       powershell -Command "if (Test-Path 'build') { Remove-Item -Recurse -Force 'build' }"
-      #     else
-      #       rm -rf build
-      #     fi
+      - name: Clean build directory
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            if (Test-Path 'build') { Remove-Item -Recurse -Force 'build' }
+          else
+            rm -rf build
+          fi
 
       - name: Install dependencies (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
@@ -93,7 +93,6 @@ jobs:
             -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
             -DPROJECT_VERSION_MINOR=${{ needs.bump_version.outputs.minor }} \
             -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }}
-
 
       - name: Build
         shell: bash
