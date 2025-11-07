@@ -70,7 +70,7 @@ public:
     void try_free_empty_blocks() { //освобождение пустых блоков
         if (free_list.size() < N) return; //свободных слотов меньше N? -> нет пустогоблока
 
-        // Ищем блоки, где все элементы свободны
+        //поиск пустых блоков
         for (auto it = memory_pool.begin(); it != memory_pool.end(); ) {
             T* block = *it;
             std::size_t free_count = 0;
@@ -82,8 +82,8 @@ public:
                 }
             }
 
-            // Если все элементы блока свободны - освобождаем блок
-            if (free_count == N) {
+           
+            if (free_count == N) { //все элементы блока свободны - освобождаем блок
                 // Удаляем элементы этого блока из free_list
                 free_list.erase(
                     std::remove_if(free_list.begin(), free_list.end(),
