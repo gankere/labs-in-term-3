@@ -69,8 +69,8 @@ jobs:
 
       - name: Clean build directory
         run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            if exist build rmdir /s /q build
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            powershell -Command "if (Test-Path 'build') { Remove-Item -Recurse -Force 'build' }"
           else
             rm -rf build
           fi
