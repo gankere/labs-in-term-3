@@ -94,6 +94,7 @@ jobs:
             -DPROJECT_VERSION_MINOR=${{ needs.bump_version.outputs.minor }} \
             -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }}
 
+
       - name: Build
         shell: bash
         run: cmake --build build

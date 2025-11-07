@@ -75,13 +75,11 @@ public:
             T* block = *it;
             std::size_t free_count = 0;
 
-            // Считаем сколько элементов этого блока в free_list
             for (T* elem : free_list) {
                 if (elem >= block && elem < block + N) {
                     free_count++;
                 }
             }
-
            
             if (free_count == N) { //все элементы блока свободны - освобождаем блок
                 // Удаляем элементы этого блока из free_list
