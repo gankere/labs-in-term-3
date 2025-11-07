@@ -88,6 +88,7 @@ jobs:
         shell: pwsh
 
       - name: Configure CMake
+        shell: bash
         run: |
           cmake -B build \
             -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
@@ -95,9 +96,11 @@ jobs:
             -DPATCH_VERSION=${{ needs.bump_version.outputs.patch }}
 
       - name: Build
+        shell: bash
         run: cmake --build build
 
       - name: Find and Run executable
+        shell: bash
         run: |
           echo "=== Searching for executable ==="
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
@@ -124,7 +127,6 @@ jobs:
               exit 1
             fi
           fi
-        shell: bash
 
       - name: Create Release
         if: matrix.os == 'ubuntu-latest'

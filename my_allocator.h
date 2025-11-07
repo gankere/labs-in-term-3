@@ -85,8 +85,7 @@ public:
                 //std::remove_if перемещает неподходящие элементы в начало,
                 //erase удаляет оставшиеся в конце
                 free_list.erase(
-                    std::remove_if(free_list.begin(), free_list.end(),
-                        [block, this](T* elem) {
+                    std::remove_if(free_list.begin(), free_list.end(), [block, this](T* elem) {
                             return elem >= block && elem < block + N;
                         }),
                     free_list.end()
