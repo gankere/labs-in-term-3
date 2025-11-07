@@ -1,8 +1,0 @@
-[
-{
-  "directory": "D:/TPU_WorkSpace/3 term/lab 4/build",
-  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -g -std=gnu++17 -o CMakeFiles\\lab4.dir\\main.cpp.obj -c \"D:\\TPU_WorkSpace\\3 term\\lab 4\\main.cpp\"",
-  "file": "D:\\TPU_WorkSpace\\3 term\\lab 4\\main.cpp",
-  "output": "CMakeFiles\\lab4.dir\\main.cpp.obj"
-}
-]
