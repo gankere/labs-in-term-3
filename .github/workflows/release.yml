@@ -2,7 +2,7 @@ name: C++ CI
 
 on:
   push:
-    branches: [ 'lab3' ]
+    branches: [ 'lab4' ]
 
 permissions:
   contents: write
@@ -91,15 +91,15 @@ jobs:
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             echo "Windows build structure:"
             find ./build -name "*.exe" | head -10
-            if [ -f "./build/Debug/lab3.exe" ]; then
-              echo "Running: ./build/Debug/lab3.exe"
-              ./build/Debug/lab3.exe
-            elif [ -f "./build/Release/lab3.exe" ]; then
-              echo "Running: ./build/Release/lab3.exe"
-              ./build/Release/lab3.exe
-            elif [ -f "./build/lab3.exe" ]; then
-              echo "Running: ./build/lab3.exe"
-              ./build/lab3.exe
+            if [ -f "./build/Debug/lab4.exe" ]; then
+              echo "Running: ./build/Debug/lab4.exe"
+              ./build/Debug/lab4.exe
+            elif [ -f "./build/Release/lab4.exe" ]; then
+              echo "Running: ./build/Release/lab4.exe"
+              ./build/Release/lab4.exe
+            elif [ -f "./build/lab4.exe" ]; then
+              echo "Running: ./build/lab4.exe"
+              ./build/lab4.exe
             else
               echo "ERROR: No executable found in expected locations!"
               echo "All files in build directory:"
@@ -108,10 +108,10 @@ jobs:
             fi
           else
             echo "Linux build structure:"
-            find ./build -name "lab3" | head -10
-            if [ -f "./build/lab3" ]; then
-              echo "Running: ./build/lab3"
-              ./build/lab3
+            find ./build -name "lab4" | head -10
+            if [ -f "./build/lab4" ]; then
+              echo "Running: ./build/lab4"
+              ./build/lab4
             else
               echo "ERROR: No executable found in expected locations!"
               echo "All files in build directory:"
@@ -126,9 +126,9 @@ jobs:
         with:
           tag_name: ${{ needs.bump_version.outputs.new_tag }}
           files: |
-            build/lab3
-            build/lab3.exe
-            build/Debug/lab3.exe
-            build/Release/lab3.exe
+            build/lab4
+            build/lab4.exe
+            build/Debug/lab4.exe
+            build/Release/lab4.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
