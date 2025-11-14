@@ -4,28 +4,25 @@
 #include <cstddef>
 #include <new> // для placement new
 
-// Простой контейнер - односвязный список
-template <typename T, typename Allocator = std::allocator<T>>
+template <typename T, class Allocator = std::allocator<T>>
 class my_container {
 private:
-    // Узел списка
-    struct Node {
-        T data;        // данные
-        Node* next;    // указатель на следующий узел
-
-        // Конструктор узла
-        Node(const T& value) : data(value), next(nullptr) {}
+    struct Node
+    {
+        Node *prev;
+        Node *next;
+        T value;
     };
 
-    // Используем аллокатор для узлов (перевязываем аллокатор)
-    using node_allocator = typename Allocator::template rebind<Node>::other;
+    // Создаём аллокатор для Node
+    typename Allocator::template rebind<Node>::other alloc;
 
     Node* head = nullptr;    // первый элемент
     Node* tail = nullptr;    // последний элемент
     size_t count = 0;        // количество элементов
-    node_allocator alloc;    // аллокатор
 
 public:
+
     // Простой итератор для обхода в одном направлении
     class iterator {
     private:
@@ -36,7 +33,7 @@ public:
         iterator(Node* node = nullptr) : current(node) {}
 
         // Получить данные
-        T& operator*() { return current->data; }
+        T& operator*() { return current->value; }  // ❗️ исправлено: data → value
 
         // Перейти к следующему элементу
         iterator& operator++() {
@@ -45,8 +42,8 @@ public:
         }
 
         // Проверка на равенство
-        bool operator==(const iterator& other) { return current == other.current; }
-        bool operator!=(const iterator& other) { return current != other.current; }
+        bool operator==(const iterator& other) const { return current == other.current; }
+        bool operator!=(const iterator& other) const { return current != other.current; }
     };
 
     // Конструктор
@@ -63,7 +60,7 @@ public:
         Node* new_node = alloc.allocate(1);
 
         // Создаем узел в выделенной памяти (placement new)
-        new (new_node) Node(value);
+        new (new_node) Node{nullptr, nullptr, value};  // ❗️ исправлено: Node(value) → Node{...}
 
         // Добавляем в список
         if (head == nullptr) {
@@ -117,12 +114,12 @@ public:
 
     // Получить первый элемент
     T& front() {
-        return head->data;
+        return head->value;  // ❗️ исправлено: data → value
     }
 
     // Получить последний элемент
     T& back() {
-        return tail->data;
+        return tail->value;  // ❗️ исправлено: data → value
     }
 
     // Итератор на начало
@@ -133,6 +130,11 @@ public:
     // Итератор на конец (после последнего элемента)
     iterator end() {
         return iterator(nullptr);
+    }
+    
+    // В public: вашей my_container
+    Allocator get_allocator() const {
+        return alloc;  // возвращаем аллокатор
     }
 };
 

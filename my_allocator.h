@@ -4,22 +4,44 @@
 #include <cstddef>
 #include <new>
 #include <vector>
-#include <algorithm> // для std::remove_if
-#include <limits>    // для max_size
+#include <iostream>
 
-template <class T, std::size_t N = 5> //N - сколько выделить
+template <class T>
 class my_allocator {
 private:
+    size_t capacity; //максимальная вместимость пула
+    size_t curIndex; //индекс текущего свободный элемент
+    size_t blockSize; //размер пула
+    T* curBlock = nullptr; //указатель на текущий пул
+    std::vector<T*> freeSlots; // вектор их ранее освобождённых слотов 
+
+    size_t total_allocated_bytes = 0; // всего байт выделено
+
     // Структура для отслеживания блока
     struct BlockInfo {
         T* block_ptr;
         std::vector<bool> is_free; // true = свободен, false = занят
     };
-
     std::vector<BlockInfo> blocks_info; // Пул зарезервированных блоков и их состояния
 
+    void expand() {
+        T* new_block = static_cast<T*>(::operator new(blockSize * sizeof(T)));
+        
+        BlockInfo info;
+        info.block_ptr = new_block;
+        info.is_free.resize(blockSize, true);
+        
+        blocks_info.push_back(info);
+        
+        curBlock = new_block;
+        curIndex = 0;
+        capacity = blockSize;
+
+        // Увеличиваем статистику
+        total_allocated_bytes += blockSize * sizeof(T);
+    }
+
 public:
-    //переименование типов
     using value_type = T; //тип, который храним
     using pointer = T*; //указатель
     using const_pointer = const T*; //константный указатель
@@ -28,106 +50,94 @@ public:
     using size_type = std::size_t; //тип размерности (сколько элементов в контейнере)
     using difference_type = std::ptrdiff_t; //тип разницы указателей
 
-    template <class U> //создание аллокатора типа U по типу прототипа T
-    struct rebind {
-        using other = my_allocator<U, N>;
-    };
+    //конструктор с параметром кол-ва выделяемых за раз элементов
+    explicit my_allocator(size_t Blocksize = 1) 
+        : capacity(0), curIndex(0), blockSize(Blocksize ? Blocksize : 1), curBlock(nullptr) {}
 
-    my_allocator() = default;
-
+    // конструктор копирования для разных типов
+    template<typename U>
+    my_allocator(const my_allocator<U>& other)
+        : capacity(0), curIndex(0), blockSize(other.getBlockSize()), curBlock(nullptr) {}
+        
     ~my_allocator() {
         clear();
     }
 
-    T* allocate(std::size_t n) {
+    template <class U>
+    struct rebind { // rebind — позволяет использовать аллокатор с другим типом
+        using other = my_allocator<U>;
+    };
+
+    void clear() {
+        // Освобождаем все блоки
+        for (auto& block_info : blocks_info) {
+            ::operator delete(block_info.block_ptr);
+        }
+        blocks_info.clear();
+        freeSlots.clear();
+        curBlock = nullptr;
+        curIndex = 0;
+        capacity = 0;
+        total_allocated_bytes = 0; // сбрасываем статистику
+        std::cout << "Cleared. Current allocated bytes: " << total_allocated_bytes << "\n";
+    }
+
+    T* allocate (std::size_t n){
         if (n == 0) return nullptr;
 
-        //для множества элементов
-        if (n > 1) { //запрашивают 2+ эл-в за раз
-            return static_cast<T*>(::operator new(n * sizeof(T))); //обычное выделение
-        }
-
-        //для единичных элементов
-        // Ищем свободный слот в уже выделенных блоках
-        for (auto& block_info : blocks_info) {
-            for (std::size_t i = 0; i < N; ++i) {
-                if (block_info.is_free[i]) {
-                    block_info.is_free[i] = false; // помечаем как занятый
-                    return block_info.block_ptr + i; // возвращаем указатель
-                }
+        if (n == 1){
+            if (!freeSlots.empty()){
+                T* ptr = freeSlots.back(); //берём последний указатель
+                freeSlots.pop_back();
+                return ptr;
             }
+
+            if (curBlock == nullptr || curIndex >= capacity) {
+                expand();
+                std::cout << "Expanded block. Current allocated bytes: " << total_allocated_bytes << "\n";
+            }
+
+            T* ptr = curBlock + curIndex;
+            ++curIndex;
+            return ptr;
         }
 
-        //если нет свободных слотов, выделяем новый блок
-        T* block = static_cast<T*>(::operator new(N * sizeof(T))); //выделяем память под новый блок из N элементов
-        blocks_info.push_back({block, std::vector<bool>(N, true)}); //сохраняем указатель на блок и вектор занятости (все свободны)
-
-        // Помечаем первый слот как занятый
-        blocks_info.back().is_free[0] = false;
-        return block; //возвращаем указатель на первый элемент нового блока
+        // Для n > 1 — обычное выделение
+        T* ptr = static_cast<T*>(::operator new(n * sizeof(T)));
+        total_allocated_bytes += n * sizeof(T); // добавляем к статистике
+        std::cout << "Allocated " << n << " elements. Current allocated bytes: " << total_allocated_bytes << "\n";
+        return ptr;
     }
 
-    void deallocate(T* p, std::size_t n) {
-        //освобождение одиночного элемента
+    void deallocate(T* p, std::size_t n) noexcept {
         if (n == 1) {
-            // Найти, какому блоку принадлежит p
-            for (auto& block_info : blocks_info) {
-                if (p >= block_info.block_ptr && p < block_info.block_ptr + N) {
-                    std::size_t idx = p - block_info.block_ptr; // вычисляем индекс
-                    block_info.is_free[idx] = true; //возврат указателя в свободные слоты
-                    break; // выходим из цикла, нашли
-                }
-            }
-            try_free_empty_blocks(); //если блок стал свободным - освобождаем
+            freeSlots.push_back(p);  // положить в пул
         } else {
-        //большие блоки освобождаем сразу
-            ::operator delete(p);
+            ::operator delete(p);    // обычное удаление
         }
     }
 
-    void try_free_empty_blocks() { //освобождение пустых блоков
-        // Цикл по блокам (итератор нужен для erase)
-        for (auto it = blocks_info.begin(); it != blocks_info.end(); ) {
-            // Проверяем, все ли слоты в блоке свободны
-            bool all_free = true;
-            for (bool is_slot_free : it->is_free) {
-                if (!is_slot_free) {
-                    all_free = false;
-                    break;
-                }
-            }
-
-            if (all_free) { //все элементы блока свободны - освобождаем блок
-                // Освобождаем память и удаляем блок из пула
-                ::operator delete(it->block_ptr);
-                it = blocks_info.erase(it); // erase возвращает итератор на следующий элемент
-            } else {
-                ++it; // переходим к следующему блоку
-            }
-        }
-    }
-
-    void clear() { //полное освобождение памяти
-        for (const auto& block_info : blocks_info) {
-            ::operator delete(block_info.block_ptr); //удаляем памяти по указателю
-        }
-        blocks_info.clear(); //удаляем сами блоки
-    }
-
-    ///////////////////////////////////////////////////////////////
-    template <class U> //шаблон: можно работать с любым типомданных U
-    my_allocator(const my_allocator<U, N>&) noexcept {}//создаём аллокатор на основе U
-
-    template <class U>
-    bool operator==(const my_allocator<U, N>&) const noexcept {
-        return true;
+    template <class U, class... Args>
+    void construct(U* ptr, Args&&... args) {
+        ::new ((void*)ptr) U(std::forward<Args>(args)...);
     }
 
     template <class U>
-    bool operator!=(const my_allocator<U, N>& other) const noexcept {
-        return !(*this == other);
+    void destroy(U* ptr) {
+        ptr->~U();
     }
-    ///////////////////////////////////////////////////////////////
+
+    size_t getBlockSize() const {
+        return blockSize;
+    }
+
+    // Метод для получения общей выделенной памяти
+    size_t allocated() const {
+        return total_allocated_bytes;
+    }
+
+    bool operator==(const my_allocator&) const noexcept { return true; }
+    bool operator!=(const my_allocator& other) const noexcept { return !(*this == other); }
 };
 
 #endif // MY_ALLOCATOR_H
