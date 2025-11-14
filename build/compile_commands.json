@@ -1,7 +1,7 @@
 [
 {
   "directory": "D:/TPU_WorkSpace/3 term/lab 4/build",
-  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DVERSION_MAJOR=0 -DVERSION_MINOR=0 -DVERSION_PATCH=0 -g -std=gnu++17 -o CMakeFiles\\lab4.dir\\main.cpp.obj -c \"D:\\TPU_WorkSpace\\3 term\\lab 4\\main.cpp\"",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DVERSION_MAJOR=0 -DVERSION_MINOR=1 -DVERSION_PATCH=0 -D_CRT_SECURE_NO_WARNINGS -g -std=c++17 -Wall -Wextra -o CMakeFiles\\lab4.dir\\main.cpp.obj -c \"D:\\TPU_WorkSpace\\3 term\\lab 4\\main.cpp\"",
   "file": "D:\\TPU_WorkSpace\\3 term\\lab 4\\main.cpp",
   "output": "CMakeFiles\\lab4.dir\\main.cpp.obj"
 }

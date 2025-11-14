@@ -14,6 +14,7 @@
 		"commands" : 
 		[
 			"add_executable",
+			"target_compile_options",
 			"target_compile_definitions"
 		],
 		"files" : 
@@ -28,13 +29,25 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 20,
+				"line" : 21,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 23,
+				"line" : 38,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 24,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 32,
 				"parent" : 0
 			}
 		]
@@ -45,22 +58,34 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++17"
+					"fragment" : "-g -std=c++17"
+				},
+				{
+					"backtrace" : 2,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 2,
+					"fragment" : "-Wextra"
 				}
 			],
 			"defines" : 
 			[
 				{
-					"backtrace" : 2,
+					"backtrace" : 3,
 					"define" : "VERSION_MAJOR=0"
 				},
 				{
-					"backtrace" : 2,
-					"define" : "VERSION_MINOR=0"
+					"backtrace" : 3,
+					"define" : "VERSION_MINOR=1"
 				},
 				{
-					"backtrace" : 2,
+					"backtrace" : 3,
 					"define" : "VERSION_PATCH=0"
+				},
+				{
+					"backtrace" : 4,
+					"define" : "_CRT_SECURE_NO_WARNINGS"
 				}
 			],
 			"language" : "CXX",

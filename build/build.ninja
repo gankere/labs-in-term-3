@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: lab3
+# Project: lab4
 # Configurations: Debug
 # =============================================================================
 
@@ -50,9 +50,9 @@ cmake_ninja_workdir = D$:/TPU_WorkSpace/3$ term/lab$ 4/build/
 build cmake_object_order_depends_target_lab4: phony || CMakeFiles/lab4.dir
 
 build CMakeFiles/lab4.dir/main.cpp.obj: CXX_COMPILER__lab4_unscanned_Debug D$:/TPU_WorkSpace/3$ term/lab$ 4/main.cpp || cmake_object_order_depends_target_lab4
-  DEFINES = -DVERSION_MAJOR=0 -DVERSION_MINOR=0 -DVERSION_PATCH=0
+  DEFINES = -DVERSION_MAJOR=0 -DVERSION_MINOR=1 -DVERSION_PATCH=0 -D_CRT_SECURE_NO_WARNINGS
   DEP_FILE = CMakeFiles\lab4.dir\main.cpp.obj.d
-  FLAGS = -g -std=gnu++17
+  FLAGS = -g -std=c++17 -Wall -Wextra
   OBJECT_DIR = CMakeFiles\lab4.dir
   OBJECT_FILE_DIR = CMakeFiles\lab4.dir
 
