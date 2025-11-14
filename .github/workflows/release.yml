@@ -25,8 +25,14 @@ jobs:
         shell: bash
         run: |
           git fetch --tags --quiet
-          last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
-          last_tag=${last_tag#v}
+          # Получаем последний тег, начинающийся с v или без v, но в формате X.Y.Z
+          last_tag=$(git tag --sort=-v:refname | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
+          if [ -z "$last_tag" ]; then
+            last_tag="0.0.0"
+          else
+            last_tag=${last_tag#v}  # убираем v, если есть
+          fi
+
           IFS='.' read -r major minor patch <<< "$last_tag"
 
           while true; do
@@ -61,6 +67,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Clean build directory
+        run: |
+          if [ -d "build" ]; then
+            echo "Removing existing build directory..."
+            rm -rf build
+          fi
+        shell: bash
+
       - name: Install dependencies (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
         run: |
@@ -71,6 +85,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           choco install cmake -y
+        shell: pwsh
 
       - name: Configure CMake
         shell: bash
@@ -91,18 +106,12 @@ jobs:
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             echo "Windows build structure:"
             find ./build -name "*.exe" | head -10
-            if [ -f "./build/Debug/lab4.exe" ]; then
-              echo "Running: ./build/Debug/lab4.exe"
-              ./build/Debug/lab4.exe
-            elif [ -f "./build/Release/lab4.exe" ]; then
-              echo "Running: ./build/Release/lab4.exe"
-              ./build/Release/lab4.exe
-            elif [ -f "./build/lab4.exe" ]; then
-              echo "Running: ./build/lab4.exe"
-              ./build/lab4.exe
+            EXECUTABLE=$(find ./build -name "*.exe" | grep -E "(lab4|Lab4)" | head -1)
+            if [ -n "$EXECUTABLE" ]; then
+              echo "Running: $EXECUTABLE"
+              "$EXECUTABLE"
             else
-              echo "ERROR: No executable found in expected locations!"
-              echo "All files in build directory:"
+              echo "ERROR: No executable found!"
               find ./build -type f | head -20
               exit 1
             fi
@@ -113,8 +122,7 @@ jobs:
               echo "Running: ./build/lab4"
               ./build/lab4
             else
-              echo "ERROR: No executable found in expected locations!"
-              echo "All files in build directory:"
+              echo "ERROR: No executable found!"
               find ./build -type f | head -20
               exit 1
             fi
