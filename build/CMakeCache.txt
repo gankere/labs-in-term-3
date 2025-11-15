@@ -254,15 +254,6 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-lab3_BINARY_DIR:STATIC=D:/TPU_WorkSpace/3 term/lab 4/build
-
-//Value Computed by CMake
-lab3_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-lab3_SOURCE_DIR:STATIC=D:/TPU_WorkSpace/3 term/lab 4
-
-//Value Computed by CMake
 lab4_BINARY_DIR:STATIC=D:/TPU_WorkSpace/3 term/lab 4/build
 
 //Value Computed by CMake

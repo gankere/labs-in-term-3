@@ -61,5 +61,11 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp"
+    },
+    "files.exclude": {
+        "**/*.rpyc": true,
+        "**/*.rpa": true,
+        "**/*.rpymc": true,
+        "**/cache/": true
     }
 }

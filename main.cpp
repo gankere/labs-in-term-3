@@ -13,51 +13,52 @@ long long factorial(int n) {
 }
 
 int main() {
+    std::cout << "1.) Создание экземпляра std::map\n";
     std::map<int, int> map1;
     
+    std::cout << "2.) Заполнение 10 элементами (ключ - число от 0 до 9, значение - факториал ключа)\n";
     for (int i = 0; i < 10; ++i) {
         map1[i] = factorial(i);
     }
 
-    // 3) создание std::map с вашим аллокатором
+    std::cout << "3.) Создание экземпляра std::map<int, int> с новым аллокатором\n";
+    // 4) заполнение 10 элементами
     std::map<int, int, std::less<int>, my_allocator<std::pair<const int, int>>> map2;
 
-    // 4) заполнение 10 элементами
+    std::cout << "4.) Заполнение 10 элементами (ключ - число от 0 до 9, значение - факториал ключа)\n";
     for (int i = 0; i < 10; ++i) {
         map2[i] = factorial(i);
     }
 
-    // 5) вывод значений
+    std::cout << "5.) Вывод на экран всех значений (ключ и значение разделены пробелом)\n";
     for (const auto& [key, value] : map2) {
         std::cout << key << " " << value << "\n";
     }
 
-    // ✅ Вывести сколько байт выделено в map2
     std::cout << "Allocated bytes in map2: " << map2.get_allocator().allocated() << "\n";
 
-    // 6) создание своего контейнера
+    std::cout << "6.) Создание экземпляра своего контейнера для хранения значений типа int\n";
     my_container<int> mycontainer1;
 
-    // 7) заполнение
+    std::cout << "7.) Заполнение 10 элементами от 0 до 9\n";
     for (int i = 0; i < 10; ++i) {
         mycontainer1.push_back(i);
     }
 
-    // 8) создание своего контейнера с аллокатором
+    std::cout << "8.) Создание экземпляра своего контейнера для хранения значений типа int с новым аллокатором\n";
     my_container<int, my_allocator<int>> mycontainer2;
 
-    // 9) заполнение
+    std::cout << "9.) Заполнение 10 элементами от 0 до 9\n";
     for (int i = 0; i < 10; ++i) {
         mycontainer2.push_back(i);
     }
 
-    // 10) вывод
+    std::cout << "10.) Вывод на экран всех значений, хранящихся в контейнере\n";
     for (auto it = mycontainer2.begin(); it != mycontainer2.end(); ++it) {
         std::cout << *it << " ";
     }
     std::cout << "\n";
 
-    // ✅ Вывести сколько байт выделено в mycontainer2
     std::cout << "Allocated bytes in mycontainer2: " << mycontainer2.get_allocator().allocated() << "\n";
 
     return 0;

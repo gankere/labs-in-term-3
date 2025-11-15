@@ -9,36 +9,36 @@
 template <class T>
 class my_allocator {
 private:
-    size_t capacity; //максимальная вместимость пула
-    size_t curIndex; //индекс текущего свободный элемент
-    size_t blockSize; //размер пула
-    T* curBlock = nullptr; //указатель на текущий пул
-    std::vector<T*> freeSlots; // вектор их ранее освобождённых слотов 
+    size_t capacity; //предел использования curBlock
+    size_t curIndex; //текущий индекс
+    size_t blockSize; //сколько элементов выделяется за раз
+    T* curBlock = nullptr; //текущий пул
+    std::vector<T*> freeSlots; // вектор из ранее освобождённых слотов 
 
-    size_t total_allocated_bytes = 0; // всего байт выделено
+    //для отслеживания общей выделенной памяти
+    size_t total_allocated_bytes = 0; //сколько всего байт выделено
 
-    // Структура для отслеживания блока
-    struct BlockInfo {
-        T* block_ptr;
+    
+    struct BlockInfo { //отслеживание состояния блоак
+        T* block_ptr; //отслеживаем текущий блок
         std::vector<bool> is_free; // true = свободен, false = занят
     };
-    std::vector<BlockInfo> blocks_info; // Пул зарезервированных блоков и их состояния
+    std::vector<BlockInfo> blocks_info; //вектор состояния выделенных блоков
 
     void expand() {
-        T* new_block = static_cast<T*>(::operator new(blockSize * sizeof(T)));
+        T* new_block = static_cast<T*>(::operator new(blockSize * sizeof(T))); //указатель на новый выделенный блок памяти для blockSize элементов T.
         
-        BlockInfo info;
-        info.block_ptr = new_block;
-        info.is_free.resize(blockSize, true);
+        BlockInfo info; //сохдаём объект для хранения информации о новом блоке
+        info.block_ptr = new_block; //указатель на ранее выделенный блок памяти
+        info.is_free.resize(blockSize, true); //уст. blockSize элементов в векторе — каждый = true, 
         
-        blocks_info.push_back(info);
+        blocks_info.push_back(info); //запоминаем информацию о новом блоке
         
         curBlock = new_block;
         curIndex = 0;
         capacity = blockSize;
 
-        // Увеличиваем статистику
-        total_allocated_bytes += blockSize * sizeof(T);
+        total_allocated_bytes += blockSize * sizeof(T); //было выделено байт
     }
 
 public:
@@ -64,21 +64,21 @@ public:
     }
 
     template <class U>
-    struct rebind { // rebind — позволяет использовать аллокатор с другим типом
+    struct rebind {     //rebind — позволяет использовать аллокатор с другим типом (U)
         using other = my_allocator<U>;
     };
 
     void clear() {
-        // Освобождаем все блоки
+        //освобожнение всех блоков памяти
         for (auto& block_info : blocks_info) {
-            ::operator delete(block_info.block_ptr);
+            ::operator delete(block_info.block_ptr); //возврат памяти  системе 
         }
         blocks_info.clear();
         freeSlots.clear();
         curBlock = nullptr;
         curIndex = 0;
         capacity = 0;
-        total_allocated_bytes = 0; // сбрасываем статистику
+        total_allocated_bytes = 0; //сброс статистики
         std::cout << "Cleared. Current allocated bytes: " << total_allocated_bytes << "\n";
     }
 
@@ -92,7 +92,7 @@ public:
                 return ptr;
             }
 
-            if (curBlock == nullptr || curIndex >= capacity) {
+            if (curBlock == nullptr || curIndex >= capacity) { //текущий блок пустой или он заполнен
                 expand();
                 std::cout << "Expanded block. Current allocated bytes: " << total_allocated_bytes << "\n";
             }
@@ -111,21 +111,24 @@ public:
 
     void deallocate(T* p, std::size_t n) noexcept {
         if (n == 1) {
-            freeSlots.push_back(p);  // положить в пул
+            freeSlots.push_back(p);  //положить в пул
         } else {
-            ::operator delete(p);    // обычное удаление
+            ::operator delete(p);    //освобождение сырого блока памяти, выделенного через ::operator new
         }
     }
 
-    template <class U, class... Args>
+    template <class U, class... Args> // Args... - пакет типов аргументов переменной длины
     void construct(U* ptr, Args&&... args) {
+        //не выделяем новую память, а конструируем из той, что есть
+        //((void*)ptr) - адрес, куда нужно поместить объект
+        //std::forward<Args>(args)... - аргументы U, где Args...- пакет типов, а args... — пакет значений.
         ::new ((void*)ptr) U(std::forward<Args>(args)...);
     }
 
     template <class U>
     void destroy(U* ptr) {
-        ptr->~U();
-    }
+        ptr->~U();//освобождает ресурсы, принадлежащие объекту U
+    }//выделенный блок памяти не освобождается
 
     size_t getBlockSize() const {
         return blockSize;
