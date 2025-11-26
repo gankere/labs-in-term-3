@@ -1,0 +1,37 @@
+# ninja log v5
+7070	7291	7854318773946784	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-build	a491d37c5b8d6c5e
+7070	7291	7854318773946784	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-build	a491d37c5b8d6c5e
+6647	6878	7854318769827801	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-patch	88d44e88985eae9b
+7291	7504	7854318776110998	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-install	ccd32969ac06d565
+9	1415477	7853496897495095	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-download	d68dec3a9e6c121
+7291	7504	7854318776110998	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-install	ccd32969ac06d565
+7742	8129	7854318782274511	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-done	cb8b895badf30487
+4	127	7852734850064534	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-mkdir	d6d16692f91dbb3a
+24	6647	0	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-update	ec08960d75ce4d6c
+24	6647	0	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-update	ec08960d75ce4d6c
+6647	6878	7854318769827801	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-patch	88d44e88985eae9b
+7742	8129	7854318782274511	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/CMakeFiles/sfml-populate-complete	cb8b895badf30487
+7505	7740	7854318778434783	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-test	7825472a177aa92c
+7742	8129	7854318782274511	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-done	cb8b895badf30487
+7505	7740	7854318778434783	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-test	7825472a177aa92c
+6878	7070	7854318771742679	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-configure	163c0661bfefc0cc
+6878	7070	7854318771742679	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-configure	163c0661bfefc0cc
+4	127	7852734850064534	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-mkdir	d6d16692f91dbb3a
+9	1415477	7853496897495095	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-download	d68dec3a9e6c121
+7742	8129	7854318782274511	CMakeFiles/sfml-populate-complete	cb8b895badf30487
+25	16499	0	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-update	ec08960d75ce4d6c
+25	16499	0	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-update	ec08960d75ce4d6c
+16500	16814	7858779515453496	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-patch	88d44e88985eae9b
+16500	16814	7858779515453496	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-patch	88d44e88985eae9b
+16814	17070	7858779518263189	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-configure	163c0661bfefc0cc
+16814	17070	7858779518263189	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-configure	163c0661bfefc0cc
+17070	17359	7858779521095324	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-build	a491d37c5b8d6c5e
+17070	17359	7858779521095324	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-build	a491d37c5b8d6c5e
+17359	17617	7858779523750947	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-install	ccd32969ac06d565
+17359	17617	7858779523750947	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-install	ccd32969ac06d565
+17617	17847	7858779525959276	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-test	7825472a177aa92c
+17617	17847	7858779525959276	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-test	7825472a177aa92c
+17847	18217	7858779529552208	CMakeFiles/sfml-populate-complete	cb8b895badf30487
+17847	18217	7858779529552208	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-done	cb8b895badf30487
+17847	18217	7858779529552208	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/CMakeFiles/sfml-populate-complete	cb8b895badf30487
+17847	18217	7858779529552208	D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-done	cb8b895badf30487

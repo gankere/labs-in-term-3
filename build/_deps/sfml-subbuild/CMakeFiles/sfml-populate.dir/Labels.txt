@@ -1,0 +1,14 @@
+# Target labels
+ sfml-populate
+# Source files and their labels
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/CMakeFiles/sfml-populate
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/CMakeFiles/sfml-populate.rule
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/CMakeFiles/sfml-populate-complete.rule
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-build.rule
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-configure.rule
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-download.rule
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-install.rule
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-mkdir.rule
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-patch.rule
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-test.rule
+D:/TPU_WorkSpace/3 term/lab 5/build/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-update.rule
