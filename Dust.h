@@ -10,10 +10,12 @@ class Dust {
         Color dustColor;
         double dustRadius;
         double lifeTimer;
+        double initialLifeTime;
 
     public:
         Dust(Point center, double radius, Point velocity, Color color, double lifetimer);
         void update(double tick);
         bool isDead() const;
         void draw(Painter& painter) const;
+        
 };

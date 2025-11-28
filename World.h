@@ -24,5 +24,5 @@ class World {
     // учтен при прошлой симуляции. См. реализацию update
     double restTime = 0.;
 
-    std::vector<Dust> dustParticles;
+    std::vector<Dust> dusts;
 };

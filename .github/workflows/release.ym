@@ -1,0 +1,146 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [ 'lab5' ]
+
+permissions:
+  contents: write
+
+jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+    outputs:
+      new_tag: ${{ steps.bump.outputs.new_tag }}
+      major: ${{ steps.bump.outputs.major }}
+      minor: ${{ steps.bump.outputs.minor }}
+      patch: ${{ steps.bump.outputs.patch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version
+        id: bump
+        shell: bash
+        run: |
+          git fetch --tags --quiet
+          # Получаем последний тег, начинающийся с v или без v, но в формате X.Y.Z
+          last_tag=$(git tag --sort=-v:refname | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
+          if [ -z "$last_tag" ]; then
+            last_tag="0.0.0"
+          else
+            last_tag=${last_tag#v}  # убираем v, если есть
+          fi
+
+          IFS='.' read -r major minor patch <<< "$last_tag"
+
+          while true; do
+            patch=$((patch+1))
+            new_tag="$major.$minor.$patch"
+
+            if git rev-parse -q --verify "refs/tags/$new_tag" >/dev/null 2>&1; then
+              continue
+            fi
+            if git ls-remote --tags origin "refs/tags/$new_tag" | grep -q "$new_tag"; then
+              continue
+            fi
+
+            git tag "$new_tag"
+            git push origin "refs/tags/$new_tag"
+            echo "new_tag=$new_tag" >> "$GITHUB_OUTPUT"
+            echo "major=$major" >> "$GITHUB_OUTPUT"
+            echo "minor=$minor" >> "$GITHUB_OUTPUT"
+            echo "patch=$patch" >> "$GITHUB_OUTPUT"
+            break
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build_and_package:
+    needs: bump_version
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clean build directory
+        run: |
+          if [ -d "build" ]; then
+            echo "Removing existing build directory..."
+            rm -rf build
+          fi
+        shell: bash
+
+      - name: Install dependencies (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++
+
+      - name: Install dependencies (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          choco install cmake -y
+        shell: pwsh
+
+      - name: Configure CMake
+        shell: bash
+        run: |
+          cmake -B build \
+            -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
+            -DPROJECT_VERSION_MINOR=${{ needs.bump_version.outputs.minor }} \
+            -DPROJECT_VERSION_PATCH=${{ needs.bump_version.outputs.patch }}
+
+      - name: Build
+        shell: bash
+        run: cmake --build build
+
+      - name: Find and Run executable
+        shell: bash
+        run: |
+          echo "=== Searching for executable ==="
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            echo "Windows build structure:"
+            find ./build -name "*.exe" | head -10
+            EXECUTABLE=$(find ./build -name "*physics*" -type f | head -n 1)
+            if [ -n "$EXECUTABLE" ]; then
+              echo "Found executable: $EXECUTABLE"
+              echo "Running: $EXECUTABLE"
+              # Попробуем запустить без аргументов, если не работает — уберём
+              "$EXECUTABLE"
+            else
+              echo "ERROR: No executable found!"
+              find ./build -type f | head -20
+              exit 1
+            fi
+          else
+            echo "Linux build structure:"
+            find ./build -name "physics" | head -10
+            if [ -f "./build/physics" ]; then
+              echo "Found executable: ./build/physics"
+              echo "Running: ./build/physics"
+              # Попробуем запустить без аргументов
+              ./build/physics
+            else
+              echo "ERROR: No executable found!"
+              find ./build -type f | head -20
+              exit 1
+            fi
+          fi
+
+      - name: Create Release
+        if: matrix.os == 'ubuntu-latest'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.bump_version.outputs.new_tag }}
+          files: |
+            build/physics
+            build/physics.exe
+            build/Debug/physics.exe
+            build/Release/physics.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

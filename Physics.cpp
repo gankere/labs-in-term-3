@@ -11,11 +11,11 @@ void Physics::setWorldBox(const Point& topLeft, const Point& bottomRight) {
     this->bottomRight = bottomRight;
 }
 
-void Physics::update(std::vector<Ball>& balls, std::vector<Dust>& dusts, const size_t ticks) const {
+void Physics::update(std::vector<Ball>& balls, const size_t ticks, std::vector<Dust>& dusts) const {
 
     for (size_t i = 0; i < ticks; ++i) {
         move(balls);
-        moveParticles(dusts);
+        updateDust(dusts); 
         collideWithBox(balls);
         collideBalls(balls, dusts);
     }
@@ -41,6 +41,9 @@ void Physics::collideBalls(std::vector<Ball>& balls, std::vector<Dust>& dusts) c
 }
 void Physics::collideWithBox(std::vector<Ball>& balls) const {
     for (Ball& ball : balls) {
+        if(!ball.getCollision()){
+            continue;
+        }
         const Point p = ball.getCenter();
         const double r = ball.getRadius();
         // определяет, находится ли v в диапазоне (lo, hi) (не включая границы)
@@ -85,5 +88,28 @@ void Physics::processCollision(Ball& a, Ball& b,
     // задаем новые скорости мячей после столкновения
     a.setVelocity(Velocity(aV - normal * p * a.getMass()));
     b.setVelocity(Velocity(bV + normal * p * b.getMass()));
+
+    Point collisionPoint = Point{ (a.getCenter().x + b.getCenter().x) / 2.0, (a.getCenter().y + b.getCenter().y) / 2.0 };
+
+    const int particles = 7;
+    const double speed = 120;
+    const double lifeTime = 1.2;
+    const double rad = 7.0;
+
+    for (int i = 0; i < particles; ++i) {
+        double ang = 2.0 * M_PI * static_cast<double>(i) / particles;
+        Point vel = Point{std::cos(ang), std::sin(ang)} * speed;
+        dusts.emplace_back(collisionPoint, rad, vel, Color(1, 0, 0), lifeTime);
+    }
 }
 
+void Physics::updateDust(std::vector<Dust>& dusts) const {
+    for (auto it = dusts.begin(); it != dusts.end(); ) {
+        it->update(timePerTick);
+        if (it->isDead()) {
+            it = dusts.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
