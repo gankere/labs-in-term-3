@@ -25,12 +25,11 @@ jobs:
         shell: bash
         run: |
           git fetch --tags --quiet
-          # Получаем последний тег, начинающийся с v или без v, но в формате X.Y.Z
           last_tag=$(git tag --sort=-v:refname | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
           if [ -z "$last_tag" ]; then
             last_tag="0.0.0"
           else
-            last_tag=${last_tag#v}  # убираем v, если есть
+            last_tag=${last_tag#v}
           fi
 
           IFS='.' read -r major minor patch <<< "$last_tag"
@@ -57,7 +56,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build_and_package:
+  build_and_release:
     needs: bump_version
     runs-on: ${{ matrix.os }}
     strategy:
@@ -66,14 +65,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Clean build directory
-        run: |
-          if [ -d "build" ]; then
-            echo "Removing existing build directory..."
-            rm -rf build
-          fi
-        shell: bash
 
       - name: Install dependencies (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
@@ -85,7 +76,6 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           choco install cmake -y
-        shell: pwsh
 
       - name: Configure CMake
         shell: bash
@@ -99,37 +89,13 @@ jobs:
         shell: bash
         run: cmake --build build
 
-      - name: Find and Run executable
+      - name: Find executable
         shell: bash
         run: |
-          echo "=== Searching for executable ==="
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            echo "Windows build structure:"
-            find ./build -name "*.exe" | head -10
-            EXECUTABLE=$(find ./build -name "*physics*" -type f | head -n 1)
-            if [ -n "$EXECUTABLE" ]; then
-              echo "Found executable: $EXECUTABLE"
-              echo "Running: $EXECUTABLE"
-              # Попробуем запустить без аргументов, если не работает — уберём
-              "$EXECUTABLE"
-            else
-              echo "ERROR: No executable found!"
-              find ./build -type f | head -20
-              exit 1
-            fi
+            find ./build -name "*physics*.exe" -type f
           else
-            echo "Linux build structure:"
-            find ./build -name "physics" | head -10
-            if [ -f "./build/physics" ]; then
-              echo "Found executable: ./build/physics"
-              echo "Running: ./build/physics"
-              # Попробуем запустить без аргументов
-              ./build/physics
-            else
-              echo "ERROR: No executable found!"
-              find ./build -type f | head -20
-              exit 1
-            fi
+            find ./build -name "physics" -type f
           fi
 
       - name: Create Release
