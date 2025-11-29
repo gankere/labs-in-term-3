@@ -3,9 +3,7 @@
 
 class View {
     public:
-        void showDocumentCreated(int id) const {
-            std::cout << "Document was created. Doc ID: " << id << std::endl;
-        }
-        
+        void showDocumentCreated(int id) const;
+        void showDocumentImported(const std::string& filename) const;
     private:
 };

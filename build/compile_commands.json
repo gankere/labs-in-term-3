@@ -10,5 +10,17 @@
   "command": "C:\\msys64\\mingw64\\bin\\g++.exe -g -std=gnu++17 -o CMakeFiles\\lab6.dir\\Controller\\Controller.cpp.obj -c C:\\Users\\gankere\\TPU_Workspace\\lab6\\Controller\\Controller.cpp",
   "file": "C:/Users/gankere/TPU_Workspace/lab6/Controller/Controller.cpp",
   "output": "C:/Users/gankere/TPU_Workspace/lab6/build/CMakeFiles/lab6.dir/Controller/Controller.cpp.obj"
+},
+{
+  "directory": "C:/Users/gankere/TPU_Workspace/lab6/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -g -std=gnu++17 -o CMakeFiles\\lab6.dir\\View\\View.cpp.obj -c C:\\Users\\gankere\\TPU_Workspace\\lab6\\View\\View.cpp",
+  "file": "C:/Users/gankere/TPU_Workspace/lab6/View/View.cpp",
+  "output": "C:/Users/gankere/TPU_Workspace/lab6/build/CMakeFiles/lab6.dir/View/View.cpp.obj"
+},
+{
+  "directory": "C:/Users/gankere/TPU_Workspace/lab6/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -g -std=gnu++17 -o CMakeFiles\\lab6.dir\\Model\\Document.cpp.obj -c C:\\Users\\gankere\\TPU_Workspace\\lab6\\Model\\Document.cpp",
+  "file": "C:/Users/gankere/TPU_Workspace/lab6/Model/Document.cpp",
+  "output": "C:/Users/gankere/TPU_Workspace/lab6/build/CMakeFiles/lab6.dir/Model/Document.cpp.obj"
 }
 ]

@@ -5,3 +5,7 @@ void Controller::createNewDocument() {
     view.showDocumentCreated(nextDocId);
     ++nextDocId;
 }
+
+void Controller::importDocument(const std::string& filename){
+    view.showDocumentImported(filename);
+}
