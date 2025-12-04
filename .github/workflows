@@ -72,11 +72,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cmake g++ make
 
+      - name: Install dependencies (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          choco install cmake -y
+
       - name: Configure CMake
         shell: bash
         run: |
           cmake -B build \
-            -DCMAKE_BUILD_TYPE=Release \
             -DPROJECT_VERSION_MAJOR=${{ needs.bump_version.outputs.major }} \
             -DPROJECT_VERSION_MINOR=${{ needs.bump_version.outputs.minor }} \
             -DPROJECT_VERSION_PATCH=${{ needs.bump_version.outputs.patch }}
@@ -85,26 +89,13 @@ jobs:
         shell: bash
         run: cmake --build build --config Release
 
-      - name: Locate and copy executables
+      - name: Find executable
         shell: bash
         run: |
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            EXE=$(find ./build -path "*/Release/lab6.exe" -type f | head -n1)
-            if [ -z "$EXE" ]; then
-              EXE=$(find ./build -name "lab6.exe" -type f | head -n1)
-            fi
-            if [ -z "$EXE" ]; then
-              echo "ERROR: lab6.exe not found!"
-              exit 1
-            fi
-            cp "$EXE" ./build/lab6.exe
+            find ./build -name "lab6.exe" -type f
           else
-            EXE=$(find ./build -name "lab6" -type f | head -n1)
-            if [ -z "$EXE" ]; then
-              echo "ERROR: lab6 not found!"
-              exit 1
-            fi
-            cp "$EXE" ./build/lab6
+            find ./build -name "lab6" -type f
           fi
 
       - name: Create Release
@@ -115,5 +106,7 @@ jobs:
           files: |
             build/lab6
             build/lab6.exe
+            build/Debug/lab6.exe
+            build/Release/lab6.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
