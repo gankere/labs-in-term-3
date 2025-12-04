@@ -51,32 +51,36 @@ build cmake_object_order_depends_target_lab6: phony || .
 
 build CMakeFiles/lab6.dir/main.cpp.obj: CXX_COMPILER__lab6_unscanned_Debug C$:/Users/gankere/TPU_Workspace/lab6/main.cpp || cmake_object_order_depends_target_lab6
   CONFIG = Debug
+  DEFINES = -DVERSION_MAJOR=0 -DVERSION_MINOR=1 -DVERSION_PATCH=0 -D_CRT_SECURE_NO_WARNINGS
   DEP_FILE = CMakeFiles\lab6.dir\main.cpp.obj.d
-  FLAGS = -g -std=gnu++17
+  FLAGS = -g -std=c++17 -Wall -Wextra
   OBJECT_DIR = CMakeFiles\lab6.dir
   OBJECT_FILE_DIR = CMakeFiles\lab6.dir
   TARGET_SUPPORT_DIR = CMakeFiles\lab6.dir
 
 build CMakeFiles/lab6.dir/Controller/Controller.cpp.obj: CXX_COMPILER__lab6_unscanned_Debug C$:/Users/gankere/TPU_Workspace/lab6/Controller/Controller.cpp || cmake_object_order_depends_target_lab6
   CONFIG = Debug
+  DEFINES = -DVERSION_MAJOR=0 -DVERSION_MINOR=1 -DVERSION_PATCH=0 -D_CRT_SECURE_NO_WARNINGS
   DEP_FILE = CMakeFiles\lab6.dir\Controller\Controller.cpp.obj.d
-  FLAGS = -g -std=gnu++17
+  FLAGS = -g -std=c++17 -Wall -Wextra
   OBJECT_DIR = CMakeFiles\lab6.dir
   OBJECT_FILE_DIR = CMakeFiles\lab6.dir\Controller
   TARGET_SUPPORT_DIR = CMakeFiles\lab6.dir
 
 build CMakeFiles/lab6.dir/View/View.cpp.obj: CXX_COMPILER__lab6_unscanned_Debug C$:/Users/gankere/TPU_Workspace/lab6/View/View.cpp || cmake_object_order_depends_target_lab6
   CONFIG = Debug
+  DEFINES = -DVERSION_MAJOR=0 -DVERSION_MINOR=1 -DVERSION_PATCH=0 -D_CRT_SECURE_NO_WARNINGS
   DEP_FILE = CMakeFiles\lab6.dir\View\View.cpp.obj.d
-  FLAGS = -g -std=gnu++17
+  FLAGS = -g -std=c++17 -Wall -Wextra
   OBJECT_DIR = CMakeFiles\lab6.dir
   OBJECT_FILE_DIR = CMakeFiles\lab6.dir\View
   TARGET_SUPPORT_DIR = CMakeFiles\lab6.dir
 
 build CMakeFiles/lab6.dir/Model/Document.cpp.obj: CXX_COMPILER__lab6_unscanned_Debug C$:/Users/gankere/TPU_Workspace/lab6/Model/Document.cpp || cmake_object_order_depends_target_lab6
   CONFIG = Debug
+  DEFINES = -DVERSION_MAJOR=0 -DVERSION_MINOR=1 -DVERSION_PATCH=0 -D_CRT_SECURE_NO_WARNINGS
   DEP_FILE = CMakeFiles\lab6.dir\Model\Document.cpp.obj.d
-  FLAGS = -g -std=gnu++17
+  FLAGS = -g -std=c++17 -Wall -Wextra
   OBJECT_DIR = CMakeFiles\lab6.dir
   OBJECT_FILE_DIR = CMakeFiles\lab6.dir\Model
   TARGET_SUPPORT_DIR = CMakeFiles\lab6.dir
