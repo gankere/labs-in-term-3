@@ -10,5 +10,6 @@ class View {
         void showDocumentImported(const std::string& filename) const;
         void showDocumentExported(const std::string& filename) const;
         void showPrimitiveAdded(int docId, const std::string& type, int shapeId) const;
+        void showPrimitiveRemoved(int docId, int shapeId) const;
     private:
 };

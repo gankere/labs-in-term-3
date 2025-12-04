@@ -19,10 +19,6 @@ void Controller::exportDocument (const std::string& filename){
 int Controller::nextShapeId = 1;
 
 void Controller::createPrimitive(const std::string& type) {
-    if (!currentDocument) { //дока нет? - автосоздание
-        currentDocument = std::make_unique<Document>(nextDocId++);
-    }
-
     std::unique_ptr<Shape> shape;
     if (type == "Circle") {
         shape = std::make_unique<Circle>(nextShapeId);
@@ -41,4 +37,9 @@ void Controller::createPrimitive(const std::string& type) {
 
         ++nextShapeId;
 }
+}
+void Controller::removePrimitive(int shapeId) {
+    int docId = currentDocument->getId();
+    currentDocument->removePrimitive(shapeId);
+    view.showPrimitiveRemoved(docId, shapeId);
 }

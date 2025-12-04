@@ -6,9 +6,10 @@ int main() {
     ctrl.importDocument("importedData.txt");
     ctrl.exportDocument("exportedData.txt");
     ctrl.createPrimitive("Circle");
-    
+
     ctrl.createNewDocument();
     ctrl.createPrimitive("Rectangle");
     ctrl.createPrimitive("Circle");
+    ctrl.removePrimitive(2);
     return 0;
 }

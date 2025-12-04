@@ -8,6 +8,7 @@ public:
     explicit Document(int id); //запрет на автоматическое создание объекта
     void addPrimitive(std::unique_ptr<Shape> shape);
     int getId() const { return docID; }
+    void removePrimitive(int shapeId);
 private:
     int docID;
     std::vector<std::unique_ptr<Shape>> primitives;

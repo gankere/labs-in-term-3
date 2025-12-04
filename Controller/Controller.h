@@ -11,6 +11,7 @@ public:
     void importDocument(const std::string& filename);
     void exportDocument(const std::string& filename);
     void createPrimitive(const std::string& type);
+    void removePrimitive(int shapeId);
 private:
     std::unique_ptr<Document> currentDocument;
     View view;
