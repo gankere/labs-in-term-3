@@ -2,7 +2,7 @@ name: C++ CI
 
 on:
   push:
-    branches: [ 'main' ]
+    branches: [ 'lab6' ]
 
 permissions:
   contents: write
@@ -72,11 +72,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cmake g++ make
 
-      - name: Install dependencies (Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          echo "Using MSVC (preinstalled on windows-latest)"
-
       - name: Configure CMake
         shell: bash
         run: |
@@ -94,7 +89,10 @@ jobs:
         shell: bash
         run: |
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            EXE=$(find ./build -name "lab6.exe" -type f | head -n1)
+            EXE=$(find ./build -path "*/Release/lab6.exe" -type f | head -n1)
+            if [ -z "$EXE" ]; then
+              EXE=$(find ./build -name "lab6.exe" -type f | head -n1)
+            fi
             if [ -z "$EXE" ]; then
               echo "ERROR: lab6.exe not found!"
               exit 1
