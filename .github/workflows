@@ -91,22 +91,32 @@ jobs:
         shell: bash
         run: cmake --build build --config Release
 
-      - name: Find executable
+      - name: Locate and copy executables
         shell: bash
         run: |
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            find ./build -name "lab6.exe" -type f -print0 | xargs -0 ls -la
+            EXE=$(find ./build -name "lab6.exe" -type f | head -n1)
+            if [ -z "$EXE" ]; then
+              echo "ERROR: lab6.exe not found!"
+              exit 1
+            fi
+            cp "$EXE" ./build/lab6.exe
           else
-            find ./build -name "lab6" -type f -print0 | xargs -0 ls -la
+            EXE=$(find ./build -name "lab6" -type f | head -n1)
+            if [ -z "$EXE" ]; then
+              echo "ERROR: lab6 not found!"
+              exit 1
+            fi
+            cp "$EXE" ./build/lab6
           fi
 
       - name: Create Release
-        if: matrix.os == 'ubuntu-latest'  # ← только один релиз, чтобы не дублировать
+        if: matrix.os == 'ubuntu-latest'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.bump_version.outputs.new_tag }}
           files: |
-            build/lab6.exe
             build/lab6
+            build/lab6.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
