@@ -9,3 +9,7 @@ void Controller::createNewDocument() {
 void Controller::importDocument(const std::string& filename){
     view.showDocumentImported(filename);
 }
+
+void Controller::exportDocument (const std::string& filename){
+    view.showDocumentExported(filename);
+}

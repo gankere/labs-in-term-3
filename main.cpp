@@ -3,6 +3,7 @@
 int main() {
     Controller ctrl;
     ctrl.createNewDocument();
-    ctrl.importDocument("data.txt");
+    ctrl.importDocument("importedData.txt");
+    ctrl.exportDocument("exportedData.txt");
     return 0;
 }

@@ -8,7 +8,7 @@ class Controller {
 public:
     void createNewDocument();
     void importDocument(const std::string& filename);
-
+    void exportDocument(const std::string& filename);
 private:
     std::unique_ptr<Document> currentDocument;
     View view;
