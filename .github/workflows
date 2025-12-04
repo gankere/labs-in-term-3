@@ -75,8 +75,7 @@ jobs:
       - name: Install dependencies (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          choco install cmake -y
-          choco install mingw -y
+          echo "Using MSVC (preinstalled on windows-latest)"
 
       - name: Configure CMake
         shell: bash
