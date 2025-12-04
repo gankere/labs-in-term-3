@@ -1,3 +1,0 @@
-C:/Users/gankere/TPU_Workspace/lab6/build/CMakeFiles/lab6.dir
-C:/Users/gankere/TPU_Workspace/lab6/build/CMakeFiles/edit_cache.dir
-C:/Users/gankere/TPU_Workspace/lab6/build/CMakeFiles/rebuild_cache.dir
